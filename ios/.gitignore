@@ -1,0 +1,46 @@
+# Xcode
+**/dgph
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+xcuserdata
+*.xcuserstate
+
+# Exceptions to above rules.
+!default.mode1v3
+!default.mode2v3
+!default.pbxuser
+!default.perspectivev3
+
+# CocoaPods
+**/Pods/
+**/.symlinks/
+
+# Flutter
+**/DerivedData/
+**/*sync/
+**/.generated/
+**/.vagrant/
+Flutter/App.framework
+Flutter/Flutter.framework
+Flutter/Flutter.podspec
+Flutter/Generated.xcconfig
+Flutter/ephemeral/
+Flutter/app.flx
+Flutter/app.zip
+Flutter/flutter_assets/
+Flutter/flutter_export_environment.sh
+Flutter/.last_build_id
+Runner/GeneratedPluginRegistrant.*
+
+# Build artifacts
+profile
+ServiceDefinitions.json
+Icon?
+
+# Misc
+.sconsign.dblite
+.tags*
+.DS_Store
