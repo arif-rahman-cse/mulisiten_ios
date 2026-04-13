@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ms200_companion/domain/model/connection_state.dart';
 import 'package:ms200_companion/l10n/app_localizations.dart';
 import 'package:ms200_companion/providers/providers.dart';
@@ -19,6 +20,7 @@ class _SensingFabState extends ConsumerState<SensingFab> {
     final connState = ref.watch(connectionStateProvider);
     final isConnected =
         connState.value == BleConnectionState.connected;
+    ref.watch(sensingActiveRevisionProvider);
     final prefs = ref.watch(appPreferencesProvider);
     final isSensing = prefs.sensingActive;
     final l = AppLocalizations.of(context)!;
@@ -43,6 +45,36 @@ class _SensingFabState extends ConsumerState<SensingFab> {
   }
 
   Future<void> _toggle(bool currentlySensing) async {
+    if (!currentlySensing) {
+      // Show location rationale before the first native permission prompt.
+      final permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (!mounted) return;
+        final l = AppLocalizations.of(context)!;
+        final proceed = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l.locationRationaleTitle),
+            content: SingleChildScrollView(
+              child: Text(l.locationRationaleMessage),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(l.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(l.locationRationaleContinue),
+              ),
+            ],
+          ),
+        );
+        if (proceed != true) return;
+      }
+    }
+
     setState(() => _loading = true);
     final repo = ref.read(sensingRepositoryProvider);
     if (currentlySensing) {

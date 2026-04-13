@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ms200_companion/core/theme/status_colors.dart';
 import 'package:ms200_companion/l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/// Full-screen fall-alert overlay modelled after iOS emergency / alarm screens.
+///
+/// Shows a dramatic pulsing red screen with large action buttons.
 class FallAlertOverlay extends StatefulWidget {
   final VoidCallback onDismiss;
   final VoidCallback onEmergency;
@@ -17,25 +21,39 @@ class FallAlertOverlay extends StatefulWidget {
 }
 
 class _FallAlertOverlayState extends State<FallAlertOverlay>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _pulseController;
-  late Animation<double> _pulseAnimation;
+    with TickerProviderStateMixin {
+  late AnimationController _bgPulseController;
+  late Animation<double> _bgPulseAnimation;
+  late AnimationController _iconPulseController;
+  late Animation<double> _iconScaleAnimation;
 
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(
+
+    // Background red pulse
+    _bgPulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 1000),
     )..repeat(reverse: true);
-    _pulseAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    _bgPulseAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
+      CurvedAnimation(parent: _bgPulseController, curve: Curves.easeInOut),
+    );
+
+    // Icon scale pulse
+    _iconPulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..repeat(reverse: true);
+    _iconScaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
+      CurvedAnimation(parent: _iconPulseController, curve: Curves.easeInOut),
     );
   }
 
   @override
   void dispose() {
-    _pulseController.dispose();
+    _bgPulseController.dispose();
+    _iconPulseController.dispose();
     super.dispose();
   }
 
@@ -44,57 +62,103 @@ class _FallAlertOverlayState extends State<FallAlertOverlay>
     final sc = Theme.of(context).extension<StatusColors>()!;
     final cs = Theme.of(context).colorScheme;
     final l = AppLocalizations.of(context)!;
+    final size = MediaQuery.sizeOf(context);
 
     return AnimatedBuilder(
-      animation: _pulseAnimation,
-      builder: (context, child) {
+      animation: _bgPulseAnimation,
+      builder: (context, _) {
         return Container(
-          color: sc.critical.withValues(alpha: _pulseAnimation.value * 0.9),
+          width: size.width,
+          height: size.height,
+          color: sc.critical.withValues(alpha: _bgPulseAnimation.value),
           child: SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.warning_rounded,
-                  size: 100,
-                  color: cs.onError,
+                const Spacer(flex: 2),
+
+                // Pulsing icon
+                AnimatedBuilder(
+                  animation: _iconScaleAnimation,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _iconScaleAnimation.value,
+                      child: child,
+                    );
+                  },
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: 0.15),
+                    ),
+                    alignment: Alignment.center,
+                    child: FaIcon(
+                      FontAwesomeIcons.personFallingBurst,
+                      size: 56,
+                      color: cs.onError,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 24),
+
+                const SizedBox(height: 32),
+
+                // Title
                 Text(
                   l.fallDetected,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         color: cs.onError,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
                       ),
                 ),
+
                 const SizedBox(height: 12),
-                Text(
-                  l.fallMessage,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: cs.onError.withValues(alpha: 0.9),
+
+                // Subtitle
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    l.fallMessage,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: cs.onError.withValues(alpha: 0.85),
+                          height: 1.5,
+                        ),
+                  ),
+                ),
+
+                const Spacer(flex: 3),
+
+                // Action buttons
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _AlarmActionButton(
+                          label: l.imOk,
+                          icon: Icons.check_circle_outline,
+                          backgroundColor: sc.normal,
+                          foregroundColor: Colors.white,
+                          onPressed: widget.onDismiss,
+                        ),
                       ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _AlarmActionButton(
+                          label: l.emergency,
+                          icon: Icons.sos_rounded,
+                          backgroundColor: Colors.white,
+                          foregroundColor: sc.critical,
+                          onPressed: widget.onEmergency,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+
                 const SizedBox(height: 48),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _AlertButton(
-                      label: l.imOk,
-                      icon: Icons.check_circle,
-                      color: sc.normal,
-                      onPressed: widget.onDismiss,
-                    ),
-                    const SizedBox(width: 24),
-                    _AlertButton(
-                      label: l.emergency,
-                      icon: Icons.emergency,
-                      color: cs.onError,
-                      textColor: sc.critical,
-                      onPressed: widget.onEmergency,
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -104,34 +168,49 @@ class _FallAlertOverlayState extends State<FallAlertOverlay>
   }
 }
 
-class _AlertButton extends StatelessWidget {
+class _AlarmActionButton extends StatelessWidget {
   final String label;
   final IconData icon;
-  final Color color;
-  final Color? textColor;
+  final Color backgroundColor;
+  final Color foregroundColor;
   final VoidCallback onPressed;
 
-  const _AlertButton({
+  const _AlarmActionButton({
     required this.label,
     required this.icon,
-    required this.color,
-    this.textColor,
+    required this.backgroundColor,
+    required this.foregroundColor,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final fg = textColor ?? cs.onError;
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, color: fg),
-      label:
-          Text(label, style: TextStyle(color: fg, fontWeight: FontWeight.bold)),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    return SizedBox(
+      height: 64,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 8,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

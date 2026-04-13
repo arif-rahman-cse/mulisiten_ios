@@ -61,11 +61,11 @@ class AppTheme {
 
       // ── Card ───────────────────────────────────────────────
       cardTheme: CardThemeData(
-        elevation: 8,
+        elevation: 2,
         shadowColor: colorScheme.shadow.withValues(alpha: 0.3),
         color: colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(32),
           //side: BorderSide(color: colorScheme.outline, width: 0.5),
         ),
       ),
@@ -126,11 +126,55 @@ class AppTheme {
       // ── Divider ────────────────────────────────────────────
       dividerTheme: DividerThemeData(color: colorScheme.outlineVariant),
 
-      // ── SwitchListTile ──────────────────────────────────────
+      // ── Switch / SwitchListTile ─────────────────────────────
+      // OFF: track fill vs outline must contrast (default M3 often blends
+      // surfaceContainerHighest with outline on light blue-gray schemes).
       switchTheme: SwitchThemeData(
-        //trackColor: WidgetStateProperty.all(colorScheme.primaryContainer),
-        //trackOutlineColor: WidgetStateProperty.all(colorScheme.outline),
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.onPrimary;
+          }
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          return colorScheme.onSurfaceVariant;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.primary;
+          }
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.12);
+          }
+          // Interior: mid surface so it reads clearly inside the outline
+          return colorScheme.surfaceContainer;
+        }),
+        trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.12);
+          }
+          // Darker rim than track fill for clear OFF silhouette
+          return colorScheme.onSurfaceVariant;
+        }),
+        trackOutlineWidth: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return 0.0;
+          }
+          return 1.5;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.primary.withValues(alpha: 0.12);
+          }
+          return colorScheme.onSurfaceVariant.withValues(alpha: 0.08);
+        }),
       ),
+
+      // ── Slider (Material 3 track, thumb, discrete value label) ─
+      sliderTheme: SliderThemeData(trackHeight: 10),
     );
   }
 }

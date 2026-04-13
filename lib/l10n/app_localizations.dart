@@ -116,11 +116,35 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
-  /// No description provided for @analytics.
+  /// No description provided for @history.
   ///
   /// In en, this message translates to:
-  /// **'Analytics'**
-  String get analytics;
+  /// **'History'**
+  String get history;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// No description provided for @week.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get week;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
 
   /// No description provided for @scanForDevices.
   ///
@@ -488,6 +512,24 @@ abstract class AppLocalizations {
   /// **'Disconnect'**
   String get disconnect;
 
+  /// No description provided for @disconnectDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect from device?'**
+  String get disconnectDialogTitle;
+
+  /// No description provided for @disconnectDialogMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will disconnect from your MS200 and clear saved pairing. You will need to scan again to reconnect.'**
+  String get disconnectDialogMessage;
+
+  /// No description provided for @disconnectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not disconnect'**
+  String get disconnectFailed;
+
   /// No description provided for @disconnectedReconnecting.
   ///
   /// In en, this message translates to:
@@ -775,6 +817,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save settings'**
   String get writeFailed;
+
+  /// No description provided for @displayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display name'**
+  String get displayName;
+
+  /// No description provided for @displayNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get displayNameHint;
+
+  /// No description provided for @enterNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterNameTitle;
+
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get nameHint;
+
+  /// No description provided for @saveBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveBtn;
+
+  /// No description provided for @cancelBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelBtn;
+
+  /// No description provided for @hiSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe'**
+  String get hiSafe;
+
+  /// No description provided for @hiCaution.
+  ///
+  /// In en, this message translates to:
+  /// **'Caution'**
+  String get hiCaution;
+
+  /// No description provided for @hiWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get hiWarning;
+
+  /// No description provided for @hiDanger.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger'**
+  String get hiDanger;
+
+  /// No description provided for @hiExtremeDanger.
+  ///
+  /// In en, this message translates to:
+  /// **'Extreme Danger'**
+  String get hiExtremeDanger;
+
+  /// No description provided for @altitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude'**
+  String get altitude;
+
+  /// No description provided for @fallStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Fall Status'**
+  String get fallStatus;
+
+  /// No description provided for @battery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get battery;
+
+  /// No description provided for @todayActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Activity'**
+  String get todayActivity;
+
+  /// No description provided for @appleHealthSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Health'**
+  String get appleHealthSource;
+
+  /// No description provided for @steps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get steps;
+
+  /// No description provided for @calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories'**
+  String get calories;
+
+  /// No description provided for @kcal.
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get kcal;
+
+  /// No description provided for @activityLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading today\'s activity...'**
+  String get activityLoading;
+
+  /// No description provided for @allowAppleHealthAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Apple Health Access'**
+  String get allowAppleHealthAccess;
+
+  /// No description provided for @appleHealthPermissionCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Apple Health access to show today\'s steps and calories.'**
+  String get appleHealthPermissionCta;
+
+  /// No description provided for @noActivityDataToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No Apple Health activity data available yet today.'**
+  String get noActivityDataToday;
+
+  /// No description provided for @activityLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load today\'s Apple Health activity.'**
+  String get activityLoadFailed;
+
+  /// No description provided for @altRising.
+  ///
+  /// In en, this message translates to:
+  /// **'▲ Rising'**
+  String get altRising;
+
+  /// No description provided for @altDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'▼ Descending'**
+  String get altDescending;
+
+  /// No description provided for @altLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'— Level'**
+  String get altLevel;
+
+  /// No description provided for @fallStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get fallStopped;
+
+  /// No description provided for @fallMonitoringLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Alt'**
+  String get fallMonitoringLow;
+
+  /// No description provided for @fallMonitoringHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High Alt'**
+  String get fallMonitoringHigh;
+
+  /// No description provided for @fallAlarm.
+  ///
+  /// In en, this message translates to:
+  /// **'ALARM'**
+  String get fallAlarm;
+
+  /// No description provided for @fallInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get fallInactive;
+
+  /// No description provided for @fallDetectedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Fall Detected!'**
+  String get fallDetectedBadge;
+
+  /// No description provided for @historyNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No historical data in this range'**
+  String get historyNoData;
+
+  /// No description provided for @historyLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest'**
+  String get historyLatest;
+
+  /// No description provided for @historyAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get historyAverage;
+
+  /// No description provided for @historyMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get historyMin;
+
+  /// No description provided for @historyMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get historyMax;
+
+  /// No description provided for @historyTotalFalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Falls'**
+  String get historyTotalFalls;
+
+  /// No description provided for @historyRecentFalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent fall events'**
+  String get historyRecentFalls;
+
+  /// No description provided for @aboutLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'About / Legal'**
+  String get aboutLegal;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @cloudConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Data Upload'**
+  String get cloudConsentTitle;
+
+  /// No description provided for @cloudConsentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When enabled, the following data from your MS200 wristband will be sent to the cloud server:\n\n• Heart rate & PPI intervals\n• Body temperature & humidity\n• GPS location (device or phone)\n• Fall detection status\n• Your name\n\nData is transmitted securely over HTTPS. You can disable uploads at any time from Settings.'**
+  String get cloudConsentMessage;
+
+  /// No description provided for @cloudConsentAgree.
+  ///
+  /// In en, this message translates to:
+  /// **'Agree & Enable'**
+  String get cloudConsentAgree;
+
+  /// No description provided for @cloudConsentDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cloudConsentDecline;
+
+  /// No description provided for @locationRationaleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Access Required'**
+  String get locationRationaleTitle;
+
+  /// No description provided for @locationRationaleMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'MS200 Companion uses your phone\'s GPS to tag health readings when the wristband has no GPS signal, and to record your location during fall detection events.\n\nBackground location access allows continuous monitoring even when the app is minimized.'**
+  String get locationRationaleMessage;
+
+  /// No description provided for @locationRationaleContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get locationRationaleContinue;
 }
 
 class _AppLocalizationsDelegate

@@ -26,6 +26,12 @@ class StatusColors extends ThemeExtension<StatusColors> {
     required this.tempWarmEnd,
     required this.humidityStart,
     required this.humidityEnd,
+    required this.altitudeStart,
+    required this.altitudeEnd,
+    required this.fallSafeStart,
+    required this.fallSafeEnd,
+    required this.batteryStart,
+    required this.batteryEnd,
   });
 
   // ── Health-status levels ───────────────────────────────────
@@ -54,6 +60,12 @@ class StatusColors extends ThemeExtension<StatusColors> {
   final Color tempWarmEnd;
   final Color humidityStart;
   final Color humidityEnd;
+  final Color altitudeStart;
+  final Color altitudeEnd;
+  final Color fallSafeStart;
+  final Color fallSafeEnd;
+  final Color batteryStart;
+  final Color batteryEnd;
 
   // ── Helpers ────────────────────────────────────────────────
 
@@ -94,48 +106,60 @@ class StatusColors extends ThemeExtension<StatusColors> {
   // ── Factory constructors ───────────────────────────────────
 
   factory StatusColors.light() => const StatusColors(
-        normal: AppColors.statusGreen,
-        caution: AppColors.statusYellow,
-        warning: AppColors.statusOrange,
-        critical: AppColors.statusRed,
-        heatExtreme: AppColors.statusDarkRed,
-        connConnected: AppColors.connectionConnected,
-        connConnecting: AppColors.connectionConnecting,
-        connScanning: AppColors.connectionScanning,
-        connDisconnected: AppColors.connectionDisconnected,
-        warningBg: AppColors.warningContainerLight,
-        warningText: AppColors.warningLight,
-        tempCoolStart: AppColors.tempCoolStart,
-        tempCoolEnd: AppColors.tempCoolEnd,
-        tempMildStart: AppColors.tempMildStart,
-        tempMildEnd: AppColors.tempMildEnd,
-        tempWarmStart: AppColors.tempWarmStart,
-        tempWarmEnd: AppColors.tempWarmEnd,
-        humidityStart: AppColors.humidityStart,
-        humidityEnd: AppColors.humidityEnd,
-      );
+    normal: AppColors.statusGreen,
+    caution: AppColors.statusYellow,
+    warning: AppColors.statusOrange,
+    critical: AppColors.statusRed,
+    heatExtreme: AppColors.statusDarkRed,
+    connConnected: AppColors.connectionConnected,
+    connConnecting: AppColors.connectionConnecting,
+    connScanning: AppColors.connectionScanning,
+    connDisconnected: AppColors.connectionDisconnected,
+    warningBg: AppColors.warningContainerLight,
+    warningText: AppColors.warningLight,
+    tempCoolStart: AppColors.tempCoolStart,
+    tempCoolEnd: AppColors.tempCoolEnd,
+    tempMildStart: AppColors.tempMildStart,
+    tempMildEnd: AppColors.tempMildEnd,
+    tempWarmStart: AppColors.tempWarmStart,
+    tempWarmEnd: AppColors.tempWarmEnd,
+    humidityStart: AppColors.humidityStart,
+    humidityEnd: AppColors.humidityEnd,
+    altitudeStart: AppColors.altitudeStart,
+    altitudeEnd: AppColors.altitudeEnd,
+    fallSafeStart: AppColors.fallSafeStart,
+    fallSafeEnd: AppColors.fallSafeEnd,
+    batteryStart: AppColors.batteryStart,
+    batteryEnd: AppColors.batteryEnd,
+  );
 
   factory StatusColors.dark() => const StatusColors(
-        normal: AppColors.statusGreen,
-        caution: AppColors.statusYellow,
-        warning: AppColors.statusOrange,
-        critical: AppColors.statusRed,
-        heatExtreme: AppColors.statusDarkRed,
-        connConnected: AppColors.connectionConnected,
-        connConnecting: AppColors.connectionConnecting,
-        connScanning: AppColors.connectionScanning,
-        connDisconnected: AppColors.connectionDisconnected,
-        warningBg: AppColors.warningContainerDark,
-        warningText: AppColors.warningDark,
-        tempCoolStart: AppColors.tempCoolStart,
-        tempCoolEnd: AppColors.tempCoolEnd,
-        tempMildStart: AppColors.tempMildStart,
-        tempMildEnd: AppColors.tempMildEnd,
-        tempWarmStart: AppColors.tempWarmStart,
-        tempWarmEnd: AppColors.tempWarmEnd,
-        humidityStart: AppColors.humidityStart,
-        humidityEnd: AppColors.humidityEnd,
-      );
+    normal: AppColors.statusGreen,
+    caution: AppColors.statusYellow,
+    warning: AppColors.statusOrange,
+    critical: AppColors.statusRed,
+    heatExtreme: AppColors.statusDarkRed,
+    connConnected: AppColors.connectionConnected,
+    connConnecting: AppColors.connectionConnecting,
+    connScanning: AppColors.connectionScanning,
+    connDisconnected: AppColors.connectionDisconnected,
+    warningBg: AppColors.warningContainerDark,
+    warningText: AppColors.warningDark,
+    tempCoolStart: AppColors.tempCoolStart,
+    tempCoolEnd: AppColors.tempCoolEnd,
+    tempMildStart: AppColors.tempMildStart,
+    tempMildEnd: AppColors.tempMildEnd,
+    tempWarmStart: AppColors.tempWarmStart,
+    tempWarmEnd: AppColors.tempWarmEnd,
+    humidityStart: AppColors.humidityStart,
+    humidityEnd: AppColors.humidityEnd,
+    altitudeStart: AppColors.altitudeStart,
+    altitudeEnd: AppColors.altitudeEnd,
+    fallSafeStart: AppColors.fallSafeStart,
+    fallSafeEnd: AppColors.fallSafeEnd,
+    batteryStart: AppColors.batteryStart,
+    batteryEnd: AppColors.batteryEnd,
+  );
 
   // ── ThemeExtension overrides ───────────────────────────────
 
@@ -160,6 +184,12 @@ class StatusColors extends ThemeExtension<StatusColors> {
     Color? tempWarmEnd,
     Color? humidityStart,
     Color? humidityEnd,
+    Color? altitudeStart,
+    Color? altitudeEnd,
+    Color? fallSafeStart,
+    Color? fallSafeEnd,
+    Color? batteryStart,
+    Color? batteryEnd,
   }) {
     return StatusColors(
       normal: normal ?? this.normal,
@@ -181,6 +211,12 @@ class StatusColors extends ThemeExtension<StatusColors> {
       tempWarmEnd: tempWarmEnd ?? this.tempWarmEnd,
       humidityStart: humidityStart ?? this.humidityStart,
       humidityEnd: humidityEnd ?? this.humidityEnd,
+      altitudeStart: altitudeStart ?? this.altitudeStart,
+      altitudeEnd: altitudeEnd ?? this.altitudeEnd,
+      fallSafeStart: fallSafeStart ?? this.fallSafeStart,
+      fallSafeEnd: fallSafeEnd ?? this.fallSafeEnd,
+      batteryStart: batteryStart ?? this.batteryStart,
+      batteryEnd: batteryEnd ?? this.batteryEnd,
     );
   }
 
@@ -196,7 +232,11 @@ class StatusColors extends ThemeExtension<StatusColors> {
       connConnected: Color.lerp(connConnected, other.connConnected, t)!,
       connConnecting: Color.lerp(connConnecting, other.connConnecting, t)!,
       connScanning: Color.lerp(connScanning, other.connScanning, t)!,
-      connDisconnected: Color.lerp(connDisconnected, other.connDisconnected, t)!,
+      connDisconnected: Color.lerp(
+        connDisconnected,
+        other.connDisconnected,
+        t,
+      )!,
       warningBg: Color.lerp(warningBg, other.warningBg, t)!,
       warningText: Color.lerp(warningText, other.warningText, t)!,
       tempCoolStart: Color.lerp(tempCoolStart, other.tempCoolStart, t)!,
@@ -207,6 +247,12 @@ class StatusColors extends ThemeExtension<StatusColors> {
       tempWarmEnd: Color.lerp(tempWarmEnd, other.tempWarmEnd, t)!,
       humidityStart: Color.lerp(humidityStart, other.humidityStart, t)!,
       humidityEnd: Color.lerp(humidityEnd, other.humidityEnd, t)!,
+      altitudeStart: Color.lerp(altitudeStart, other.altitudeStart, t)!,
+      altitudeEnd: Color.lerp(altitudeEnd, other.altitudeEnd, t)!,
+      fallSafeStart: Color.lerp(fallSafeStart, other.fallSafeStart, t)!,
+      fallSafeEnd: Color.lerp(fallSafeEnd, other.fallSafeEnd, t)!,
+      batteryStart: Color.lerp(batteryStart, other.batteryStart, t)!,
+      batteryEnd: Color.lerp(batteryEnd, other.batteryEnd, t)!,
     );
   }
 }

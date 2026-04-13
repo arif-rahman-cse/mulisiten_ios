@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:drift/drift.dart';
+import 'package:ms200_companion/core/constants/command_ids.dart';
 import 'package:ms200_companion/data/ble/ble_manager.dart';
 import 'package:ms200_companion/data/ble/nus_protocol.dart';
 import 'package:ms200_companion/data/local/app_database.dart';
@@ -16,10 +17,13 @@ class SensingRepository {
   final CloudUploader _uploader;
   final AppPreferences _prefs;
   final DeviceLocationProvider _location;
+  final void Function()? onSensingActivePersisted;
 
   DateTime? _lastUploadTime;
   Timer? _uploadTimer;
+  Timer? _syncTimer;
   SensingData? _bufferedData;
+  int? _bufferedRowId;
   final _sensingDataController = StreamController<SensingData>.broadcast();
   StreamSubscription<SensingData>? _bleSub;
 
@@ -30,8 +34,15 @@ class SensingRepository {
     this._db,
     this._uploader,
     this._prefs,
-    this._location,
-  );
+    this._location, {
+    this.onSensingActivePersisted,
+  });
+
+  void _persistSensingActive(bool value) {
+    if (_prefs.sensingActive == value) return;
+    _prefs.sensingActive = value;
+    onSensingActivePersisted?.call();
+  }
 
   void startListening() {
     _bleSub?.cancel();
@@ -44,14 +55,18 @@ class SensingRepository {
     _uploadTimer?.cancel();
     _uploadTimer = null;
     _bufferedData = null;
+    _bufferedRowId = null;
   }
 
   Future<void> _onSensingData(SensingData data) async {
-    var enriched = data;
+    // Prefs may be false while the band still streams (e.g. after clearing data).
+    _persistSensingActive(true);
+
+    //print('onSensingData: ${data.deviceId}');
     if (!data.hasGps) {
       final pos = await _location.getCurrentPosition();
       if (pos != null) {
-        enriched = data.copyWith(
+        data = data.copyWith(
           latitude: _location.latToE7(pos),
           longitude: _location.lonToE7(pos),
           locationSource: 'PHONE',
@@ -59,11 +74,10 @@ class SensingRepository {
       }
     }
 
-    _sensingDataController.add(enriched);
+    _sensingDataController.add(data);
 
-    if (_prefs.localDbEnabled) {
-      await _saveToDB(enriched);
-    }
+    // Always buffer to local DB as a data safety net for batch sync
+    final rowId = await _saveToDB(data);
 
     if (_prefs.realtimeUploadEnabled) {
       final now = DateTime.now();
@@ -71,14 +85,20 @@ class SensingRepository {
 
       if (_lastUploadTime == null ||
           now.difference(_lastUploadTime!) >= interval) {
-        debugPrint('Uploading sensing data');
         _uploadTimer?.cancel();
         _lastUploadTime = now;
         _bufferedData = null;
-        await _uploader.uploadSingleSensingData(enriched, _prefs.userName);
+        _bufferedRowId = null;
+        final ok = await _uploader.uploadSingleSensingData(
+          data,
+          _prefs.userName,
+        );
+        if (ok) {
+          await _db.markAsSynced([rowId]);
+        }
       } else {
-        debugPrint('Buffering sensing data');
-        _bufferedData = enriched;
+        _bufferedData = data;
+        _bufferedRowId = rowId;
         if (_uploadTimer == null || !_uploadTimer!.isActive) {
           final delay = interval - now.difference(_lastUploadTime!);
           _uploadTimer = Timer(delay, _processBufferedUpload);
@@ -90,14 +110,22 @@ class SensingRepository {
   Future<void> _processBufferedUpload() async {
     if (_bufferedData != null && _prefs.realtimeUploadEnabled) {
       final dataToUpload = _bufferedData!;
+      final rowId = _bufferedRowId;
       _bufferedData = null;
+      _bufferedRowId = null;
       _lastUploadTime = DateTime.now();
-      await _uploader.uploadSingleSensingData(dataToUpload, _prefs.userName);
+      final ok = await _uploader.uploadSingleSensingData(
+        dataToUpload,
+        _prefs.userName,
+      );
+      if (ok && rowId != null) {
+        await _db.markAsSynced([rowId]);
+      }
     }
   }
 
-  Future<void> _saveToDB(SensingData data) async {
-    await _db.insertSensingData(
+  Future<int> _saveToDB(SensingData data) async {
+    return _db.insertSensingData(
       SensingDataEntriesCompanion.insert(
         deviceId: Value(data.deviceId),
         timestamp: Value(data.timestamp),
@@ -123,19 +151,36 @@ class SensingRepository {
   }
 
   Future<bool> startRealtimeSensing() async {
+    // Ensure location permission is obtained and background stream is active
+    // before sensing starts — location is used to tag readings when the
+    // wristband has no GPS fix.
+    await _location.initialize();
+    _location.startBackgroundLocationStream();
+
+    // Subscribe before waiting for start ACK: if the band is already sensing
+    // (e.g. prefs were cleared while it kept streaming), ACK may be non-zero
+    // but notifications still arrive — without this, the home UI stays stale.
+    startListening();
     final completer = Completer<bool>();
     await _ble.sendCommand(
       NusProtocol.buildStartSensing(),
       onAck: (ack) {
+        if (ack.ackNo != CommandIds.ackStartSensing) {
+          completer.complete(false);
+          return;
+        }
         final code = NusProtocol.parseAckCode(ack.data);
         if (code == 0) {
           _ble.sendCommand(NusProtocol.buildStartDataStream());
-          _prefs.sensingActive = true;
-          startListening();
+          _persistSensingActive(true);
           completer.complete(true);
-        } else {
-          completer.complete(false);
+          return;
         }
+        // Already in realtime or busy: still enable app-side state and data
+        // stream so the FAB matches the band and Stop works.
+        _ble.sendCommand(NusProtocol.buildStartDataStream());
+        _persistSensingActive(true);
+        completer.complete(true);
       },
       onError: (_) => completer.complete(false),
     );
@@ -145,50 +190,68 @@ class SensingRepository {
   Future<void> stopRealtimeSensing() async {
     await _ble.sendCommand(NusProtocol.buildStopDataStream());
     await _ble.sendCommand(NusProtocol.buildStopSensing());
-    _prefs.sensingActive = false;
+    _persistSensingActive(false);
     stopListening();
   }
 
+  /// Start periodic batch sync of unuploaded records.
+  /// Runs an immediate sync, then repeats every 15 minutes.
+  void startPeriodicSync() {
+    _syncTimer?.cancel();
+    syncUnsentRecords();
+    _syncTimer = Timer.periodic(const Duration(minutes: 15), (_) {
+      syncUnsentRecords();
+    });
+  }
+
   Future<void> syncUnsentRecords() async {
-    final records = await _db.getUnsyncedRecords(100);
-    if (records.isEmpty) return;
+    try {
+      final records = await _db.getUnsyncedRecords(100);
+      if (records.isEmpty) return;
 
-    final domainRecords = records
-        .map(
-          (r) => SensingData(
-            id: r.id,
-            deviceId: r.deviceId,
-            timestamp: r.timestamp,
-            heartRate: r.heartRate,
-            statusIndex: r.statusIndex,
-            statusLevel: r.statusLevel,
-            temperature: r.temperature,
-            humidity: r.humidity,
-            heatIndex: r.heatIndex,
-            heatIndexMax: r.heatIndexMax,
-            fallState: r.fallState,
-            batteryLevel: r.batteryLevel,
-            latitude: r.latitude,
-            longitude: r.longitude,
-            altitudeDiff: r.altitudeDiff,
-            ppi0: r.ppi0,
-            ppi1: r.ppi1,
-            ppi2: r.ppi2,
-            synced: r.synced,
-            createdAt: r.createdAt,
-            locationSource: r.locationSource,
-          ),
-        )
-        .toList();
+      final domainRecords = records
+          .map(
+            (r) => SensingData(
+              id: r.id,
+              deviceId: r.deviceId,
+              timestamp: r.timestamp,
+              heartRate: r.heartRate,
+              statusIndex: r.statusIndex,
+              statusLevel: r.statusLevel,
+              temperature: r.temperature,
+              humidity: r.humidity,
+              heatIndex: r.heatIndex,
+              heatIndexMax: r.heatIndexMax,
+              fallState: r.fallState,
+              batteryLevel: r.batteryLevel,
+              latitude: r.latitude,
+              longitude: r.longitude,
+              altitudeDiff: r.altitudeDiff,
+              ppi0: r.ppi0,
+              ppi1: r.ppi1,
+              ppi2: r.ppi2,
+              synced: r.synced,
+              createdAt: r.createdAt,
+              locationSource: r.locationSource,
+            ),
+          )
+          .toList();
 
-    final success = await _uploader.uploadBatch(domainRecords, _prefs.userName);
-    if (success) {
-      await _db.markAsSynced(records.map((r) => r.id).toList());
+      final success = await _uploader.uploadBatch(
+        domainRecords,
+        _prefs.userName,
+      );
+      if (success) {
+        await _db.markAsSynced(records.map((r) => r.id).toList());
+      }
+    } catch (e) {
+      debugPrint('syncUnsentRecords failed: $e');
     }
   }
 
   void dispose() {
     stopListening();
+    _syncTimer?.cancel();
     _sensingDataController.close();
   }
 }

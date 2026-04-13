@@ -12,11 +12,11 @@ class AppPreferences {
   static const _keyRealtimeUploadEnabled = 'realtime_upload_enabled';
   static const _keyRealtimeUploadInterval = 'realtime_upload_interval_sec';
   static const _keyCloudApiUrl = 'cloud_api_url';
-  static const _keyCloudApiKey = 'cloud_api_key';
   static const _keyPairedDeviceAddress = 'paired_device_address';
   static const _keyPairedDeviceName = 'paired_device_name';
   static const _keySensingActive = 'sensing_active';
   static const _keyUserName = 'user_name';
+  static const _keyCloudUploadConsented = 'cloud_upload_consented';
 
   // User param keys
   static const _keyUserAge = 'user_age';
@@ -24,6 +24,7 @@ class AppPreferences {
   static const _keyUserWeight = 'user_weight';
   static const _keyUserExerciseHabit = 'user_exercise_habit';
   static const _keyUserMedicalHistory = 'user_medical_history';
+  
 
   // System param keys
   static const _keySysExt96ms = 'sys_ext_96ms';
@@ -43,6 +44,12 @@ class AppPreferences {
       _prefs.getBool(_keyCloudBufferEnabled) ?? true;
   set cloudBufferEnabled(bool v) => _prefs.setBool(_keyCloudBufferEnabled, v);
 
+  // --- Cloud Upload Consent ---
+  bool get cloudUploadConsented =>
+      _prefs.getBool(_keyCloudUploadConsented) ?? false;
+  set cloudUploadConsented(bool v) =>
+      _prefs.setBool(_keyCloudUploadConsented, v);
+
   // --- Realtime Upload ---
   bool get realtimeUploadEnabled =>
       _prefs.getBool(_keyRealtimeUploadEnabled) ?? false;
@@ -58,9 +65,6 @@ class AppPreferences {
   String get cloudApiUrl =>
       _prefs.getString(_keyCloudApiUrl) ?? 'https://cms.k-fis.com/';
   set cloudApiUrl(String v) => _prefs.setString(_keyCloudApiUrl, v);
-
-  String get cloudApiKey => _prefs.getString(_keyCloudApiKey) ?? '';
-  set cloudApiKey(String v) => _prefs.setString(_keyCloudApiKey, v);
 
   // --- Paired Device ---
   String get pairedDeviceAddress =>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy for MULiSiTEN</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #111;
+        }
+
+        h1 {
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-bottom: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #eaeaea;
+            padding-top: 20px;
+        }
+
+        .lang-switcher {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lang-switcher button {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .lang-switcher button.active {
+            background-color: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+
+        .lang-switcher button:hover:not(.active) {
+            background-color: #e0e0e0;
+        }
+
+        /* By default hide english, show japanese */
+        #content-en {
+            display: none;
+        }
+
+        #content-ja {
+            display: block;
+        }
+
+        .lang-switcher button {
+
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="lang-switcher">
+        <button id="btn-ja" class="active" onclick="switchLang('ja')">日本語</button>
+        <button id="btn-en" onclick="switchLang('en')">English</button>
+    </div>
+
+    <!-- JAPANESE CONTENT -->
+    <div id="content-ja">
+        <h1>プライバシーポリシー</h1>
+        <p><strong>最終更新日:</strong> 2026年 4月 7日</p>
+
+        <section>
+            <h2>1. はじめに</h2>
+            <p><strong>MULiSiTEN</strong>へようこそ。このプライバシーポリシーは、お客様が当社のモバイルアプリケーションを使用する際に、当社がどのように情報を収集、使用、開示、および保護するかを説明するものです。当社は、お客様の個人の健康情報を保護し、App
+                Storeが定めるガイドライン（特にヘルスケアおよびフィットネスアプリに関するもの）を遵守することをお約束します。</p>
+        </section>
+
+        <section>
+            <h2>2. 収集する情報</h2>
+            <p>健康、フィットネス、および安全追跡機能を提供するため、MULiSiTENは以下の種類のデータを収集します：</p>
+
+            <h3>A. Apple HealthKit データ</h3>
+            <p>お客様の明示的な許可に基づき、AppleのHealthKitプラットフォームから健康およびフィットネスデータを読み取ります。収集するデータには以下が含まれます：</p>
+            <ul>
+                <li>歩数</li>
+                <li>消費カロリー</li>
+            </ul>
+
+            <h3>B. リストバンドセンサーデータ（Bluetooth）</h3>
+            <p>Bluetooth経由で専用のリストバンドデバイスに接続されている場合、アプリは以下のリアルタイムの生体情報および環境データを収集します：</p>
+            <ul>
+                <li>心拍数</li>
+                <li>皮膚/環境温度</li>
+                <li>湿度</li>
+                <li>暑さ指数 (Heat Index)</li>
+                <li>転倒状態（転倒検知）</li>
+                <li>バッテリー残量</li>
+                <li>センサー由来の緯度・経度</li>
+                <li>高度差</li>
+                <li>PPI0</li>
+                <li>PPI1</li>
+                <li>PPI2</li>
+                <li>ステータスインデックス</li>
+                <li>ステータスレベル</li>
+                <li>最高暑さ指数</li>
+            </ul>
+
+            <h3>C. 位置情報</h3>
+            <p>お客様の同意に基づき、デバイスのGPSを使用して正確な位置情報を収集します。これは主に、緊急事態に対処するため、転倒検知イベントなどの重大なイベントの発生場所を記録するために使用されます。</p>
+        </section>
+
+        <section>
+            <h2>3. データの使用方法</h2>
+            <p>収集したデータは、健康管理、フィットネス追跡、およびユーザーの安全のためにのみ厳密に使用されます。具体的には、以下の目的で使用されます：</p>
+            <ul>
+                <li>身体活動および生体情報のリアルタイムダッシュボードの提供。</li>
+                <li>過去の健康およびフィットネス指標の追跡と記録。</li>
+                <li>緊急時のアラートと通知のトリガー（例：GPS座標を伴う転倒検知など）。</li>
+                <li>複数デバイスから履歴にアクセスできるよう、アクティビティと健康データを安全にクラウドサーバーへ同期。</li>
+            </ul>
+            <p><strong>HealthKitデータに関する重要な注意事項:</strong> Apple
+                HealthKitから取得した情報が、広告、マーケティング、またはその他の使用ベースのデータマイニングの目的で第三者に使用または開示されることは<em>決してありません</em>。</p>
+        </section>
+
+        <section>
+            <h2>4. クラウドストレージとデータセキュリティ</h2>
+            <p>収集されたすべてのデータ（HealthKitデータ、センサーの生体情報、GPS位置情報）は安全に送信され、当社のクラウドサーバーに保存されます。当社は、不正アクセス、開示、または改ざんからお客様の機密性の高い個人情報および健康情報を保護します。
+            </p>
+            <p>当社がお客様の個人の健康データをデータブローカーや第三者に販売することはありません。</p>
+        </section>
+
+        <section>
+            <h2>5. プライバシーの選択と管理</h2>
+            <p>当社は、お客様にデータに対する完全な管理権限を付与すべきであると考えています：</p>
+            <ul>
+                <li><strong>HealthKitの権限:</strong> iPhoneのApple
+                    Health（ヘルスケア）アプリから直接、特定のデータタイプ（歩数やカロリーなど）へのアクセスを許可または拒否することができます。これらの権限はいつでも取り消すことができます。</li>
+                <li><strong>Bluetoothと位置情報:</strong>
+                    iOSデバイスの設定内で、Bluetoothおよび位置情報サービスの権限を有効または無効にすることができます。これらを無効にすると、自動転倒検知の位置情報タグ付けなど、アプリの一部の機能が制限される場合があります。
+                </li>
+                <li><strong>データの削除:</strong>
+                    お客様には、当社のサーバーに保存されているすべての個人データおよび健康データの削除を要求する権利があります。この要求は、アプリ内から、またはサポートチームに連絡することで開始できます。</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. プライバシーポリシーの変更</h2>
+            <p>当社は、プライバシーポリシーを随時更新することがあります。変更があった場合は、このページに新しいプライバシーポリシーを掲載し、上部の「最終更新日」を更新することでお知らせします。変更がないか、定期的にこのプライバシーポリシーを確認することをお勧めします。
+            </p>
+        </section>
+
+        <section>
+            <h2>7. お問い合わせ</h2>
+            <p>当社のプライバシーポリシーに関するご質問やご提案がありましたら、以下までお気軽にお問い合わせください。<br>
+                <strong>TEL: (+81) 0982-33-3602</strong>
+                <br>
+                <strong>住所: 〒882-0862 宮崎県延岡市浜町 222-1</strong>
+            </p>
+        </section>
+    </div>
+
+    <!-- ENGLISH CONTENT -->
+    <div id="content-en">
+        <h1>Privacy Policy</h1>
+        <p><strong>Last Updated:</strong> April 7, 2026</p>
+
+        <section>
+            <h2>1. Introduction</h2>
+            <p>Welcome to <strong>MULiSiTEN</strong>. This Privacy Policy explains how we collect, use, disclose, and
+                safeguard your information when you use our mobile application. We are committed to protecting your
+                personal
+                health information and adhering to the guidelines set forth by the App Store, specifically regarding
+                Health
+                and Fitness apps.</p>
+        </section>
+
+        <section>
+            <h2>2. Information We Collect</h2>
+            <p>To provide our health, fitness, and safety tracking features, MULiSiTEN collects the following types of
+                data:</p>
+
+            <h3>A. Apple HealthKit Data</h3>
+            <p>With your explicit permission, we read health and fitness data from Apple's HealthKit platform. The data
+                we
+                collect includes:</p>
+            <ul>
+                <li>Step Count</li>
+                <li>Calories Burned</li>
+            </ul>
+
+            <h3>B. Wristband Sensor Data (Bluetooth)</h3>
+            <p>When connected to the companion wristband device via Bluetooth, the app collects real-time biometric and
+                environmental readings, including:</p>
+            <ul>
+                <li>Heart Rate</li>
+                <li>Skin/Environmental Temperature</li>
+                <li>Humidity</li>
+                <li>Heat Index</li>
+                <li>Fall Status (Fall Detection)</li>
+                <li>Battery Level</li>
+                <li>Sensor-derived Latitude and Longitude</li>
+                <li>Altitude Difference</li>
+                <li>PPI0</li>
+                <li>PPI1</li>
+                <li>PPI2</li>
+                <li>Status Index</li>
+                <li>Status Level</li>
+                <li>Heat Index Max</li>
+            </ul>
+
+            <h3>C. Location Information</h3>
+            <p>With your consent, we use your device's GPS to collect precise location data. This is primarily used to
+                record the location of critical events, such as fall detection incidents, to assist with emergency
+                situations.</p>
+        </section>
+
+        <section>
+            <h2>3. How We Use Your Data</h2>
+            <p>We use the data collected strictly for health management, fitness tracking, and user safety.
+                Specifically,
+                your data is used to:</p>
+            <ul>
+                <li>Provide real-time dashboards for your physical activity and biometric readings.</li>
+                <li>Track and record historical health and fitness metrics.</li>
+                <li>Trigger alerts and notifications in emergency scenarios (e.g., Fall Detection along with your GPS
+                    coordinates).</li>
+                <li>Sync your activity and health data to our cloud servers securely so you can access your history
+                    across
+                    devices.</li>
+            </ul>
+            <p><strong>Important Note on HealthKit Data:</strong> Any information retrieved from Apple HealthKit is
+                <em>never</em> used or disclosed to third parties for advertising, marketing, or other use-based data
+                mining
+                purposes.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Cloud Storage and Data Security</h2>
+            <p>All data collected (HealthKit data, sensor biometrics, and GPS location) is securely transmitted and
+                stored
+                on our cloud servers. We protect your sensitive personal and health information against unauthorized
+                access,
+                disclosure, or
+                alteration.</p>
+            <p>We do not sell your personal health data to data brokers or any third parties.</p>
+        </section>
+
+        <section>
+            <h2>5. Your Privacy Choices and Control</h2>
+            <p>We believe in granting you full control over your data:</p>
+            <ul>
+                <li><strong>HealthKit Permissions:</strong> You can choose to allow or deny access to specific data
+                    types
+                    (such as Step Count or Calories) directly through the Apple Health app on your iPhone. You can
+                    revoke
+                    these permissions at any time.</li>
+                <li><strong>Bluetooth and Location:</strong> You can enable or disable Bluetooth and Location Service
+                    permissions within your iOS device Settings. Note that disabling these may limit certain app
+                    functionalities, such as automated fall detection location tagging.</li>
+                <li><strong>Data Deletion:</strong> You have the right to request the deletion of all your personal and
+                    health data stored on our servers. You can initiate this request from within the app or by
+                    contacting
+                    our support team.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new
+                Privacy Policy on this page and updating the "Last Updated" date at the top. We encourage you to review
+                this
+                Privacy Policy periodically for any changes.</p>
+        </section>
+
+        <section>
+            <h2>7. Contact Us</h2>
+            <p>If you have any questions or suggestions about our Privacy Policy, please do not hesitate to contact us
+                at<br>
+                <strong>TEL: (+81) 0982-33-3602</strong>.
+                <br>
+                <strong>Address: 222-1 Hamamachi, Nobeoka, Miyazaki 882-0862</strong>
+            </p>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>&copy; <span id="year">2026</span> MULiSiTEN. All rights reserved.</p>
+    </div>
+
+    <script>
+        function switchLang(lang) {
+            // Content divs
+            const contentJa = document.getElementById('content-ja');
+            const contentEn = document.getElementById('content-en');
+            // Buttons
+            const btnJa = document.getElementById('btn-ja');
+            const btnEn = document.getElementById('btn-en');
+
+            if (lang === 'ja') {
+                contentJa.style.display = 'block';
+                contentEn.style.display = 'none';
+                btnJa.classList.add('active');
+                btnEn.classList.remove('active');
+                document.title = 'プライバシーポリシー - MULiSiTEN';
+            } else {
+                contentJa.style.display = 'none';
+                contentEn.style.display = 'block';
+                btnEn.classList.add('active');
+                btnJa.classList.remove('active');
+                document.title = 'Privacy Policy for MULiSiTEN';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -189,8 +189,12 @@ class BleManager {
   }
 
   /// Reconnect using autoConnect (OS-managed whitelist scan).
-  Future<void> reconnect(BluetoothDevice device) async {
+  /// [knownName] overrides platformName which is empty for fromId() devices.
+  Future<void> reconnect(BluetoothDevice device, {String? knownName}) async {
     _device = device;
+    if (knownName != null && knownName.isNotEmpty) {
+      connectedDeviceId = knownName;
+    }
     _setState(BleConnectionState.connecting);
 
     _connectionSub?.cancel();
@@ -255,10 +259,11 @@ class BleManager {
     _txSubscription = _txCharacteristic!.onValueReceived.listen(
       (value) => _handleReceivedData(Uint8List.fromList(value)),
     );
-
-    connectedDeviceId = device.platformName.trim().isEmpty
-        ? 'Unknown'
-        : device.platformName;
+    if (connectedDeviceId == null || connectedDeviceId!.isEmpty) {
+      connectedDeviceId = device.platformName.trim().isEmpty
+          ? 'Unknown'
+          : device.platformName;
+    }
     _setState(BleConnectionState.connected);
     _log.i('NUS ready, device: $connectedDeviceId');
   }

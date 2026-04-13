@@ -18,7 +18,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get analytics => 'Analytics';
+  String get history => 'History';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String get week => 'Week';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get year => 'Year';
 
   @override
   String get scanForDevices => 'Scan for Devices';
@@ -205,6 +217,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disconnect => 'Disconnect';
 
   @override
+  String get disconnectDialogTitle => 'Disconnect from device?';
+
+  @override
+  String get disconnectDialogMessage =>
+      'This will disconnect from your MS200 and clear saved pairing. You will need to scan again to reconnect.';
+
+  @override
+  String get disconnectFailed => 'Could not disconnect';
+
+  @override
   String get disconnectedReconnecting => 'Disconnected — Reconnecting...';
 
   @override
@@ -347,4 +369,156 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get writeFailed => 'Failed to save settings';
+
+  @override
+  String get displayName => 'Display name';
+
+  @override
+  String get displayNameHint => 'Enter your name';
+
+  @override
+  String get enterNameTitle => 'Enter your name';
+
+  @override
+  String get nameHint => 'Your name';
+
+  @override
+  String get saveBtn => 'Save';
+
+  @override
+  String get cancelBtn => 'Cancel';
+
+  @override
+  String get hiSafe => 'Safe';
+
+  @override
+  String get hiCaution => 'Caution';
+
+  @override
+  String get hiWarning => 'Warning';
+
+  @override
+  String get hiDanger => 'Danger';
+
+  @override
+  String get hiExtremeDanger => 'Extreme Danger';
+
+  @override
+  String get altitude => 'Altitude';
+
+  @override
+  String get fallStatus => 'Fall Status';
+
+  @override
+  String get battery => 'Battery';
+
+  @override
+  String get todayActivity => 'Today\'s Activity';
+
+  @override
+  String get appleHealthSource => 'Apple Health';
+
+  @override
+  String get steps => 'Steps';
+
+  @override
+  String get calories => 'Calories';
+
+  @override
+  String get kcal => 'kcal';
+
+  @override
+  String get activityLoading => 'Loading today\'s activity...';
+
+  @override
+  String get allowAppleHealthAccess => 'Allow Apple Health Access';
+
+  @override
+  String get appleHealthPermissionCta =>
+      'Allow Apple Health access to show today\'s steps and calories.';
+
+  @override
+  String get noActivityDataToday =>
+      'No Apple Health activity data available yet today.';
+
+  @override
+  String get activityLoadFailed =>
+      'Could not load today\'s Apple Health activity.';
+
+  @override
+  String get altRising => '▲ Rising';
+
+  @override
+  String get altDescending => '▼ Descending';
+
+  @override
+  String get altLevel => '— Level';
+
+  @override
+  String get fallStopped => 'Stopped';
+
+  @override
+  String get fallMonitoringLow => 'Low Alt';
+
+  @override
+  String get fallMonitoringHigh => 'High Alt';
+
+  @override
+  String get fallAlarm => 'ALARM';
+
+  @override
+  String get fallInactive => 'Inactive';
+
+  @override
+  String get fallDetectedBadge => 'Fall Detected!';
+
+  @override
+  String get historyNoData => 'No historical data in this range';
+
+  @override
+  String get historyLatest => 'Latest';
+
+  @override
+  String get historyAverage => 'Average';
+
+  @override
+  String get historyMin => 'Min';
+
+  @override
+  String get historyMax => 'Max';
+
+  @override
+  String get historyTotalFalls => 'Falls';
+
+  @override
+  String get historyRecentFalls => 'Recent fall events';
+
+  @override
+  String get aboutLegal => 'About / Legal';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get cloudConsentTitle => 'Cloud Data Upload';
+
+  @override
+  String get cloudConsentMessage =>
+      'When enabled, the following data from your MS200 wristband will be sent to the cloud server:\n\n• Heart rate & PPI intervals\n• Body temperature & humidity\n• GPS location (device or phone)\n• Fall detection status\n• Your name\n\nData is transmitted securely over HTTPS. You can disable uploads at any time from Settings.';
+
+  @override
+  String get cloudConsentAgree => 'Agree & Enable';
+
+  @override
+  String get cloudConsentDecline => 'Cancel';
+
+  @override
+  String get locationRationaleTitle => 'Location Access Required';
+
+  @override
+  String get locationRationaleMessage =>
+      'MS200 Companion uses your phone\'s GPS to tag health readings when the wristband has no GPS signal, and to record your location during fall detection events.\n\nBackground location access allows continuous monitoring even when the app is minimized.';
+
+  @override
+  String get locationRationaleContinue => 'Continue';
 }

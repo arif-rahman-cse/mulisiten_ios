@@ -16,6 +16,7 @@ class UserProfileSection extends ConsumerStatefulWidget {
 }
 
 class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
+  final _nameCtrl = TextEditingController();
   final _ageCtrl = TextEditingController();
   final _heightCtrl = TextEditingController();
   final _weightCtrl = TextEditingController();
@@ -39,6 +40,7 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
 
   @override
   void dispose() {
+    _nameCtrl.dispose();
     _ageCtrl.dispose();
     _heightCtrl.dispose();
     _weightCtrl.dispose();
@@ -48,6 +50,7 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
 
   void _populateFromPrefs() {
     final prefs = ref.read(appPreferencesProvider);
+    _nameCtrl.text = prefs.userName;
     final heightCm = prefs.userHeight / 10.0;
     final weightKg = prefs.userWeight / 10.0;
     _ageCtrl.text = '${prefs.userAge}';
@@ -55,6 +58,12 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
     _weightCtrl.text = weightKg.toStringAsFixed(0);
     _medicalCtrl.text = '${prefs.userMedicalHistory}';
     setState(() => _exerciseHabit = prefs.userExerciseHabit);
+  }
+
+  void _persistDisplayName() {
+    final v = _nameCtrl.text.trim();
+    ref.read(appPreferencesProvider).userName = v;
+    ref.read(profileIdentityRevisionProvider.notifier).bump();
   }
 
   void _populate(DeviceConfig config) {
@@ -108,7 +117,7 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
             // Header with Sync button
             Row(
               children: [
-                Icon(Icons.person_outline, size: 20, color: cs.primary),
+                Icon(Icons.person_rounded, size: 20, color: cs.primary),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -142,6 +151,25 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
             ),
             const SizedBox(height: 16),
 
+            TextField(
+              controller: _nameCtrl,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                labelText: l.displayName,
+                hintText: l.displayNameHint,
+                isDense: true,
+              ),
+              onEditingComplete: _persistDisplayName,
+              onTapOutside: (_) {
+                FocusScope.of(context).unfocus();
+                _persistDisplayName();
+              },
+              onSubmitted: (value) {
+                FocusScope.of(context).unfocus();
+              },
+            ),
+            const SizedBox(height: 16),
+
             // Warning banner
             if (disabled)
               AnimatedContainer(
@@ -162,7 +190,7 @@ class _UserProfileSectionState extends ConsumerState<UserProfileSection> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
-                      Icons.lock_outline_rounded,
+                      Icons.lock_rounded,
                       size: 14,
                       color: sc.warningText,
                     ),

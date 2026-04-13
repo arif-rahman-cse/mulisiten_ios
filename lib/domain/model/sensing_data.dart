@@ -59,7 +59,7 @@ class SensingData {
 
   bool get hasGps => latitude != 0 || longitude != 0;
 
-  bool get isFallDetected => fallState >= 1;
+  bool get isFallDetected => fallState >= 2;
 
   SensingData copyWith({
     int? id,

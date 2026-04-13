@@ -25,7 +25,8 @@ class _PpiChartState extends State<PpiChart> {
   @override
   void didUpdateWidget(covariant PpiChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.latestData != null && widget.latestData != oldWidget.latestData) {
+    if (widget.latestData != null &&
+        widget.latestData != oldWidget.latestData) {
       _addPoint(widget.latestData!);
     }
   }
@@ -38,9 +39,15 @@ class _PpiChartState extends State<PpiChart> {
     _ppi1.addLast(FlSpot(x, data.ppi1.toDouble()));
     _ppi2.addLast(FlSpot(x, data.ppi2.toDouble()));
 
-    while (_ppi0.length > _maxPoints) { _ppi0.removeFirst(); }
-    while (_ppi1.length > _maxPoints) { _ppi1.removeFirst(); }
-    while (_ppi2.length > _maxPoints) { _ppi2.removeFirst(); }
+    while (_ppi0.length > _maxPoints) {
+      _ppi0.removeFirst();
+    }
+    while (_ppi1.length > _maxPoints) {
+      _ppi1.removeFirst();
+    }
+    while (_ppi2.length > _maxPoints) {
+      _ppi2.removeFirst();
+    }
   }
 
   @override
@@ -49,6 +56,7 @@ class _PpiChartState extends State<PpiChart> {
     final l = AppLocalizations.of(context)!;
 
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 16, 16, 8),
         child: Column(
@@ -66,18 +74,35 @@ class _PpiChartState extends State<PpiChart> {
               height: 160,
               child: _ppi0.isEmpty
                   ? Center(
-                      child: Text(l.waitingForData, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                      child: Text(
+                        l.waitingForData,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     )
                   : LineChart(
                       LineChartData(
-                        gridData: const FlGridData(show: true, drawVerticalLine: false),
+                        gridData: const FlGridData(
+                          show: true,
+                          drawVerticalLine: false,
+                        ),
                         titlesData: FlTitlesData(
                           leftTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: true, reservedSize: 40),
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 40,
+                            ),
                           ),
-                          bottomTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                          bottomTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          rightTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
                         ),
                         borderData: FlBorderData(show: false),
                         lineBarsData: [
@@ -134,7 +159,13 @@ class _Legend extends StatelessWidget {
       children: [
         Container(width: 10, height: 3, color: color),
         const SizedBox(width: 4),
-        Text(label, style: TextStyle(fontSize: 10, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
       ],
     );
   }

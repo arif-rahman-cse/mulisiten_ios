@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ms200_companion/domain/model/connection_state.dart';
 import 'package:ms200_companion/l10n/app_localizations.dart';
 import 'package:ms200_companion/providers/providers.dart';
+import 'package:ms200_companion/presentation/scan/widgets/name_input_dialog.dart';
 
 class ScanScreen extends ConsumerStatefulWidget {
   const ScanScreen({super.key});
@@ -48,10 +49,18 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
     });
 
     _connSub?.cancel();
-    _connSub = ble.connectionState.listen((state) {
+    _connSub = ble.connectionState.listen((state) async {
       if (!mounted) return;
       if (state == BleConnectionState.connected) {
-        context.pop();
+        final prefs = ref.read(appPreferencesProvider);
+        if (prefs.userName.trim().isEmpty) {
+          await showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (ctx) => const NameInputDialog(),
+          );
+        }
+        if (mounted) context.pop();
       } else if (state == BleConnectionState.scanning) {
         setState(() => _statusKey = 'scanningDevices');
       } else if (state == BleConnectionState.disconnected) {
@@ -142,7 +151,11 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                 final result = _results[index];
                 final device = result.device;
                 return ListTile(
-                  leading: const Icon(Icons.watch),
+                  leading: Image.asset(
+                    'assets/icons/toshiba_band.png',
+                    width: 40,
+                    height: 40,
+                  ),
                   title: Text(device.platformName),
                   trailing: Text('${result.rssi} dBm'),
                   onTap: () => _connect(device),

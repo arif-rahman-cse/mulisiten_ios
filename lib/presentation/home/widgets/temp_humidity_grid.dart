@@ -35,6 +35,23 @@ class _TempTile extends StatelessWidget {
     final temp = data?.temperatureCelsius ?? 0;
     final hi = data?.heatIndex ?? 0;
 
+    String getHiText(int val) {
+      switch (val) {
+        case 0:
+          return l.hiSafe;
+        case 1:
+          return l.hiCaution;
+        case 2:
+          return l.hiWarning;
+        case 3:
+          return l.hiDanger;
+        case 4:
+          return l.hiExtremeDanger;
+        default:
+          return l.statusUnknown;
+      }
+    }
+
     // Determine gradient based on temp (Cool -> Mild -> Warm)
     Color startColor;
     Color endColor;
@@ -50,7 +67,7 @@ class _TempTile extends StatelessWidget {
     }
 
     // Gauge value between 0C and 50C
-    final progress = (temp.clamp(0.0, 50.0) / 50.0);
+    final progress = (temp.clamp(0.0, 100.0) / 100.0);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
@@ -118,9 +135,7 @@ class _TempTile extends StatelessWidget {
                               backgroundColor: cs.onSurface.withValues(
                                 alpha: 0.15,
                               ),
-                              color: isDark
-                                  ? endColor
-                                  : endColor.withValues(alpha: 0.8),
+                              color: cs.onSurface,
                             ),
                             const Center(
                               child: Icon(Icons.thermostat, size: 14),
@@ -154,15 +169,19 @@ class _TempTile extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: cs.onSurface.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(6),
+                              color: cs.onPrimary.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: cs.onPrimary.withValues(alpha: 0.4),
+                                width: 1,
+                              ),
                             ),
                             child: Text(
-                              'HI: $hi',
+                              getHiText(hi),
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: cs.onSurfaceVariant,
+                                color: cs.onPrimary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
                               ),
                             ),
                           ),
@@ -263,9 +282,7 @@ class _HumidityTile extends StatelessWidget {
                               backgroundColor: cs.onSurface.withValues(
                                 alpha: 0.15,
                               ),
-                              color: isDark
-                                  ? endColor
-                                  : endColor.withValues(alpha: 0.8),
+                              color: cs.onSurface,
                             ),
                             const Center(
                               child: Icon(Icons.water_drop, size: 14),

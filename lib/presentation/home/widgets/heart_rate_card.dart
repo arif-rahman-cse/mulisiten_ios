@@ -13,13 +13,14 @@ class HeartRateCard extends StatefulWidget {
 }
 
 class _HeartRateCardState extends State<HeartRateCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _pulseController;
-  late Animation<double> _pulseAnimation;
+/* with SingleTickerProviderStateMixin */ {
+  // late AnimationController _pulseController;
+  // late Animation<double> _pulseAnimation;
 
   @override
   void initState() {
     super.initState();
+    /*
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -29,16 +30,20 @@ class _HeartRateCardState extends State<HeartRateCard>
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
     _updatePulseDuration();
+    */
   }
 
   @override
   void didUpdateWidget(covariant HeartRateCard oldWidget) {
     super.didUpdateWidget(oldWidget);
+    /*
     if (oldWidget.data?.heartRate != widget.data?.heartRate) {
       _updatePulseDuration();
     }
+    */
   }
 
+  /*
   void _updatePulseDuration() {
     final hr = widget.data?.heartRate ?? 0;
     if (hr > 0) {
@@ -54,10 +59,11 @@ class _HeartRateCardState extends State<HeartRateCard>
       _pulseController.duration = const Duration(seconds: 1);
     }
   }
+  */
 
   @override
   void dispose() {
-    _pulseController.dispose();
+    // _pulseController.dispose();
     super.dispose();
   }
 
@@ -68,6 +74,7 @@ class _HeartRateCardState extends State<HeartRateCard>
     final cs = Theme.of(context).colorScheme;
     final hr = widget.data?.heartRate ?? 0;
     final level = widget.data?.statusLevel ?? -1;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final baseColor = level >= 0
         ? sc.colorForStatusLevel(level)
@@ -77,11 +84,16 @@ class _HeartRateCardState extends State<HeartRateCard>
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
-        height: 180,
+        height: 140,
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [baseColor, baseColor.withValues(alpha: 0.7)],
+            colors: isDark
+                ? [
+                    baseColor.withValues(alpha: 0.2),
+                    baseColor.withValues(alpha: 0.1),
+                  ]
+                : [baseColor, baseColor.withValues(alpha: 0.7)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -90,8 +102,10 @@ class _HeartRateCardState extends State<HeartRateCard>
           children: [
             // Background Watermark Pulse
             Positioned(
-              right: -30,
-              bottom: -40,
+              right: -20,
+              bottom: -30,
+              // Animation commented out to keep it static
+              /*
               child: ScaleTransition(
                 scale: _pulseAnimation,
                 child: Icon(
@@ -99,6 +113,14 @@ class _HeartRateCardState extends State<HeartRateCard>
                   size: 160,
                   color: cs.onPrimary.withValues(alpha: 0.15),
                 ),
+              ),
+              */
+              child: Icon(
+                Icons.favorite,
+                size: 120,
+                color: isDark
+                    ? baseColor.withValues(alpha: 0.1)
+                    : cs.onPrimary.withValues(alpha: 0.15),
               ),
             ),
 
@@ -146,7 +168,7 @@ class _HeartRateCardState extends State<HeartRateCard>
                         style: Theme.of(context).textTheme.displayLarge
                             ?.copyWith(
                               color: cs.onPrimary,
-                              fontSize: 72,
+                              fontSize: 60,
                               fontWeight: FontWeight.w800,
                               height: 1.0,
                             ),

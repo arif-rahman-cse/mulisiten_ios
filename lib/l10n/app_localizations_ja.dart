@@ -18,7 +18,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
-  String get analytics => '分析';
+  String get history => '履歴';
+
+  @override
+  String get day => '日';
+
+  @override
+  String get week => '週';
+
+  @override
+  String get month => '月';
+
+  @override
+  String get year => '年';
 
   @override
   String get scanForDevices => 'デバイスを検索';
@@ -48,10 +60,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get waitingForData => 'データ待機中...';
 
   @override
-  String get fallDetected => '転倒検知';
+  String get fallDetected => '落下検知';
 
   @override
-  String get fallMessage => '転倒が検知されました。\n大丈夫ですか？';
+  String get fallMessage => '落下が検知されました。\n大丈夫ですか？';
 
   @override
   String get imOk => '大丈夫です';
@@ -63,7 +75,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get safe => '安全';
 
   @override
-  String get fall => '転倒';
+  String get fall => '落下';
 
   @override
   String get noGps => 'GPS無し';
@@ -203,6 +215,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get disconnect => '切断';
+
+  @override
+  String get disconnectDialogTitle => 'デバイスから切断しますか？';
+
+  @override
+  String get disconnectDialogMessage =>
+      'MS200との接続を切り、保存済みのペアリング情報を消去します。再接続するには再度検索が必要です。';
+
+  @override
+  String get disconnectFailed => '切断できませんでした';
 
   @override
   String get disconnectedReconnecting => '切断 — 再接続中...';
@@ -347,4 +369,154 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get writeFailed => '設定の保存に失敗しました';
+
+  @override
+  String get displayName => '表示名';
+
+  @override
+  String get displayNameHint => '名前を入力してください';
+
+  @override
+  String get enterNameTitle => '名前を入力';
+
+  @override
+  String get nameHint => 'あなたの名前';
+
+  @override
+  String get saveBtn => '保存';
+
+  @override
+  String get cancelBtn => 'キャンセル';
+
+  @override
+  String get hiSafe => '安全';
+
+  @override
+  String get hiCaution => '注意';
+
+  @override
+  String get hiWarning => '警告';
+
+  @override
+  String get hiDanger => '危険';
+
+  @override
+  String get hiExtremeDanger => '極度危険';
+
+  @override
+  String get altitude => '高度';
+
+  @override
+  String get fallStatus => '落下検知';
+
+  @override
+  String get battery => 'バッテリー';
+
+  @override
+  String get todayActivity => '今日のアクティビティ';
+
+  @override
+  String get appleHealthSource => 'Apple Health';
+
+  @override
+  String get steps => '歩数';
+
+  @override
+  String get calories => '消費カロリー';
+
+  @override
+  String get kcal => 'kcal';
+
+  @override
+  String get activityLoading => '今日のアクティビティを読み込み中...';
+
+  @override
+  String get allowAppleHealthAccess => 'Apple Health を許可';
+
+  @override
+  String get appleHealthPermissionCta =>
+      '今日の歩数と消費カロリーを表示するために Apple Health へのアクセスを許可してください。';
+
+  @override
+  String get noActivityDataToday => '今日の Apple Health アクティビティデータはまだありません。';
+
+  @override
+  String get activityLoadFailed => '今日の Apple Health アクティビティを読み込めませんでした。';
+
+  @override
+  String get altRising => '▲ 上昇';
+
+  @override
+  String get altDescending => '▼ 下降';
+
+  @override
+  String get altLevel => '— 水平';
+
+  @override
+  String get fallStopped => '停止';
+
+  @override
+  String get fallMonitoringLow => '低高度';
+
+  @override
+  String get fallMonitoringHigh => '高高度';
+
+  @override
+  String get fallAlarm => '警報';
+
+  @override
+  String get fallInactive => '非アクティブ';
+
+  @override
+  String get fallDetectedBadge => '落下検知！';
+
+  @override
+  String get historyNoData => 'この期間の履歴データはありません';
+
+  @override
+  String get historyLatest => '最新';
+
+  @override
+  String get historyAverage => '平均';
+
+  @override
+  String get historyMin => '最小';
+
+  @override
+  String get historyMax => '最大';
+
+  @override
+  String get historyTotalFalls => '転倒回数';
+
+  @override
+  String get historyRecentFalls => '最近の転倒イベント';
+
+  @override
+  String get aboutLegal => 'アプリについて';
+
+  @override
+  String get privacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get cloudConsentTitle => 'クラウドデータアップロード';
+
+  @override
+  String get cloudConsentMessage =>
+      '有効にすると、MS200リストバンドから取得した以下のデータがクラウドサーバーに送信されます：\n\n• 心拍数 & PPI間隔\n• 体温 & 湿度\n• GPS位置情報（デバイスまたはスマートフォン）\n• 転倒検知ステータス\n• お名前\n\nデータはHTTPSで安全に送信されます。アップロードは設定からいつでも無効にできます。';
+
+  @override
+  String get cloudConsentAgree => '同意して有効化';
+
+  @override
+  String get cloudConsentDecline => 'キャンセル';
+
+  @override
+  String get locationRationaleTitle => '位置情報へのアクセスが必要です';
+
+  @override
+  String get locationRationaleMessage =>
+      'MS200 Companionは、リストバンドにGPS信号がない場合にスマートフォンのGPSで健康データに位置情報を付与し、転倒検知時の位置を記録します。\n\nバックグラウンド位置情報へのアクセスにより、アプリが最小化されていても継続的にモニタリングできます。';
+
+  @override
+  String get locationRationaleContinue => '続行';
 }

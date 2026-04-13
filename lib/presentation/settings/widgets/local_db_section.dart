@@ -34,20 +34,25 @@ class _LocalDbSectionState extends ConsumerState<LocalDbSection> {
               contentPadding: EdgeInsets.zero,
               secondary: Icon(Icons.storage_outlined),
             ),
-            // const SizedBox(height: 4),
-            // if (kDebugMode)
-            //   OutlinedButton.icon(
-            //     onPressed: () => context.push('/db-debug'),
-            //     icon: const Icon(Icons.storage),
-            //     label: Text(l.viewDb),
-            //   ),
-            // if (kDebugMode) const SizedBox(height: 4),
-            // OutlinedButton.icon(
-            //   onPressed: () => _clearDb(context),
-            //   icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error),
-            //   label: Text(l.clearDatabase,
-            //       style: TextStyle(color: Theme.of(context).colorScheme.error)),
-            // ),
+            const SizedBox(height: 4),
+            if (kDebugMode)
+              OutlinedButton.icon(
+                onPressed: () => context.push('/db-debug'),
+                icon: const Icon(Icons.storage),
+                label: Text(l.viewDb),
+              ),
+            if (kDebugMode) const SizedBox(height: 4),
+            OutlinedButton.icon(
+              onPressed: () => _clearDb(context),
+              icon: Icon(
+                Icons.delete_outline,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              label: Text(
+                l.clearDatabase,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
           ],
         ),
       ),
@@ -62,10 +67,15 @@ class _LocalDbSectionState extends ConsumerState<LocalDbSection> {
         title: Text(l.clearDbTitle),
         content: Text(l.clearDbMessage),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l.cancel),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: FilledButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
             child: Text(l.clear),
           ),
         ],
@@ -77,9 +87,9 @@ class _LocalDbSectionState extends ConsumerState<LocalDbSection> {
       await db.deleteAllSensingData();
       await db.deleteAllFallEvents();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l.databaseCleared)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l.databaseCleared)));
       }
     }
   }

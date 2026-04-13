@@ -25,7 +25,7 @@ class _ClockSyncSectionState extends ConsumerState<ClockSyncSection> {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            const Icon(Icons.access_time, size: 24),
+            const Icon(Icons.access_time_rounded, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

@@ -9,12 +9,17 @@ class CloudUploader {
 
   CloudUploader(this._api);
 
-  Future<bool> uploadSingleSensingData(SensingData data, String userName) async {
+  Future<bool> uploadSingleSensingData(
+    SensingData data,
+    String userName,
+  ) async {
+    print('uploadSingleSensingData: $data');
     final body = _buildSensorBody(data, userName);
     return _retryPost(() => _api.postSensorData(body));
   }
 
   Future<bool> uploadFallEvent(FallEvent event) async {
+    print('uploadFallEvent: $event');
     final body = {
       'sensor_value': {
         'device_serial': event.deviceId,

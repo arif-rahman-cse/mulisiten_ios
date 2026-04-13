@@ -17,6 +17,7 @@ class CompactInfoRow extends StatelessWidget {
     final bat = data?.batteryLevel ?? 0;
     final hasGps = data?.hasGps ?? false;
     final locSrc = data?.locationSource ?? 'MS200';
+    final altitudeDiff = data?.altitudeDiff ?? 0;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -47,6 +48,14 @@ class CompactInfoRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Altitude: $altitudeDiff"),
+                ),
+              ),
+              _buildDivider(cs, isDark),
               Expanded(
                 flex: 3,
                 child: Align(

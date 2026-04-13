@@ -1,4 +1,3 @@
-
 import 'package:ms200_companion/core/constants/ble_uuids.dart';
 import 'package:ms200_companion/core/constants/command_ids.dart';
 import 'package:ms200_companion/core/utils/byte_utils.dart';
@@ -71,8 +70,7 @@ class NusProtocol {
 
   // --------------- CMD Builders ---------------
 
-  static Uint8List buildGetSerial() =>
-      buildReadCmd(CommandIds.cmdGetSerial);
+  static Uint8List buildGetSerial() => buildReadCmd(CommandIds.cmdGetSerial);
 
   static Uint8List buildSetClock() {
     final now = DateTime.now();
@@ -156,7 +154,11 @@ class NusProtocol {
   static SensingData? parseDetailedData(Uint8List data, String deviceId) {
     if (data.length < 40) return null;
     if (data[0] != CommandIds.flagDetailedData) return null;
-    debugPrint('parseDetailedData: $data');
+
+    //Print all the parse data here
+    print(
+      'parseDetailedData data: deviceId: $deviceId, timestamp: ${ByteUtils.readUint32LE(data, 1)}, heartRate: ${ByteUtils.readUint8(data, 5)}, statusIndex: ${ByteUtils.readUint8(data, 6)}, statusLevel: ${ByteUtils.readUint8(data, 7)}, temperature: ${ByteUtils.readInt16LE(data, 8)}, humidity: ${ByteUtils.readUint16LE(data, 10)}, heatIndex: ${ByteUtils.readUint8(data, 12)}, fallState: ${ByteUtils.readInt8(data, 13)}, heatIndexMax: ${ByteUtils.readUint8(data, 14)}, batteryLevel: ${ByteUtils.readUint8(data, 15)}, latitude: ${ByteUtils.readInt32LE(data, 20)}, longitude: ${ByteUtils.readInt32LE(data, 24)}, altitudeDiff: ${ByteUtils.readInt16LE(data, 28)}, ppi0: ${ByteUtils.readUint16LE(data, 30)}, ppi1: ${ByteUtils.readUint16LE(data, 32)}, ppi2: ${ByteUtils.readUint16LE(data, 34)}, createdAt: ${DateTime.now().millisecondsSinceEpoch}',
+    );
 
     return SensingData(
       deviceId: deviceId,
@@ -204,12 +206,13 @@ class NusProtocol {
 
       config.exerciseHabit = data[5] & 0xFF;
       config.medicalHistory = data[6] & 0xFF;
-
     } else {
       config.exerciseHabit = data[5] & 0xFF;
       config.medicalHistory = data[6] & 0xFF;
     }
-    debugPrint('Device Info Parsed from device: age: ${config.age}, height: ${config.heightCm}, weight: ${config.weightKg}, threshold: ${config.notificationThreshold}, exerciseHabit: ${config.exerciseHabit}, medicalHistory: ${config.medicalHistory}');
+    debugPrint(
+      'Device Info Parsed from device: age: ${config.age}, height: ${config.heightCm}, weight: ${config.weightKg}, threshold: ${config.notificationThreshold}, exerciseHabit: ${config.exerciseHabit}, medicalHistory: ${config.medicalHistory}',
+    );
     return config;
   }
 

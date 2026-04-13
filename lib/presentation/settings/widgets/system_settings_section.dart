@@ -78,30 +78,33 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
             // ── Header with Sync button ──────────────────────────
             Row(
               children: [
-                Icon(Icons.settings_outlined, size: 20, color: cs.primary),
+                Icon(Icons.settings_rounded, size: 20, color: cs.primary),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     l.systemSettings,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: cs.onSurface,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: cs.onSurface,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 TextButton.icon(
+                  // sync_rounded
                   icon: _loading
                       ? const SizedBox(
                           width: 14,
                           height: 14,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.sync, size: 16),
+                      : const Icon(Icons.sync_rounded, size: 16),
                   label: Text(l.syncSystem),
                   style: TextButton.styleFrom(
                     foregroundColor: cs.primary,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     textStyle: const TextStyle(fontSize: 12),
                   ),
                   onPressed: disabled || _loading ? null : _syncFromDevice,
@@ -115,23 +118,25 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 margin: const EdgeInsets.only(bottom: 12),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: sc.warningBg,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                      color: sc.warningText.withValues(alpha: 0.4)),
+                    color: sc.warningText.withValues(alpha: 0.4),
+                  ),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.lock_outline_rounded,
-                        size: 14, color: sc.warningText),
+                    Icon(Icons.lock_rounded, size: 14, color: sc.warningText),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                      l.stopSensingWarning,
+                        l.stopSensingWarning,
                         style: TextStyle(
                           color: sc.warningText,
                           fontSize: 11,
@@ -147,7 +152,7 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
             AbsorbPointer(
               absorbing: disabled,
               child: AnimatedOpacity(
-                opacity:    1.0,
+                opacity: 1.0,
                 duration: const Duration(milliseconds: 200),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,38 +166,37 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                           ? null
                           : (v) => setState(() => _ext96ms = v),
                       contentPadding: EdgeInsets.zero,
-                      secondary: Icon(Icons.info_outline),
+                      secondary: Icon(Icons.info_rounded),
                     ),
                     const Divider(height: 0),
                     SwitchListTile(
                       title: Text(l.statusIndexMode),
-                      subtitle: Text(_siMode
-                          ? l.siMode
-                          : l.ppiMode),
+                      subtitle: Text(_siMode ? l.siMode : l.ppiMode),
                       value: _siMode,
                       onChanged: disabled
                           ? null
                           : (v) => setState(() => _siMode = v),
                       contentPadding: EdgeInsets.zero,
-                      secondary: Icon(Icons.insert_chart_outlined_rounded),
+                      secondary: Icon(Icons.insert_chart_rounded),
                     ),
                     const Divider(height: 0),
                     SwitchListTile(
                       title: Text(l.storageMode),
-                      subtitle: Text(_storageMode
-                          ? l.overwriteMode
-                          : l.keepRecords),
+                      subtitle: Text(
+                        _storageMode ? l.overwriteMode : l.keepRecords,
+                      ),
                       value: _storageMode,
                       onChanged: disabled
                           ? null
                           : (v) => setState(() => _storageMode = v),
                       contentPadding: EdgeInsets.zero,
-                      secondary: Icon(Icons.sd_storage_outlined),
+                      secondary: Icon(Icons.sd_storage_rounded),
                     ),
 
                     const SizedBox(height: 12),
 
                     // ── Advertise Dropdown ────────────────────────
+                    /*
                     DropdownButtonFormField<int>(
                       initialValue: _advertise,
                       decoration: InputDecoration(
@@ -200,9 +204,18 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                       ),
                       items: [
                         DropdownMenuItem(value: 0, child: Text(l.off)),
-                        const DropdownMenuItem(value: 1, child: Text('Beacon 1')),
-                        const DropdownMenuItem(value: 2, child: Text('Beacon 2')),
-                        const DropdownMenuItem(value: 3, child: Text('Beacon 3')),
+                        const DropdownMenuItem(
+                          value: 1,
+                          child: Text('Beacon 1'),
+                        ),
+                        const DropdownMenuItem(
+                          value: 2,
+                          child: Text('Beacon 2'),
+                        ),
+                        const DropdownMenuItem(
+                          value: 3,
+                          child: Text('Beacon 3'),
+                        ),
                       ],
                       onChanged: disabled
                           ? null
@@ -212,8 +225,8 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                               }
                             },
                     ),
-
-                    const SizedBox(height: 20),
+                    */
+                    //const SizedBox(height: 20),
 
                     // ── Data Sensing Interval ─────────────────────
                     Text(
@@ -228,19 +241,23 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                       width: double.infinity,
                       child: SegmentedButton<int>(
                         style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.resolveWith((states) {
+                          backgroundColor: WidgetStateProperty.resolveWith((
+                            states,
+                          ) {
                             return states.contains(WidgetState.selected)
                                 ? cs.primary
                                 : cs.surface;
                           }),
-                          foregroundColor:
-                              WidgetStateProperty.resolveWith((states) {
+                          foregroundColor: WidgetStateProperty.resolveWith((
+                            states,
+                          ) {
                             return states.contains(WidgetState.selected)
                                 ? cs.onPrimary
                                 : cs.onSurfaceVariant;
                           }),
-                          side: WidgetStatePropertyAll(BorderSide(color: cs.outline)),
+                          side: WidgetStatePropertyAll(
+                            BorderSide(color: cs.outline),
+                          ),
                           shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -251,17 +268,17 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                           const ButtonSegment(
                             value: 0,
                             label: Text('1s'),
-                            icon: Icon(Icons.timer_outlined),
+                            icon: Icon(Icons.timer_rounded),
                           ),
                           const ButtonSegment(
                             value: 1,
                             label: Text('30s'),
-                            icon: Icon(Icons.timer_outlined),
+                            icon: Icon(Icons.timer_rounded),
                           ),
                           ButtonSegment(
                             value: 2,
                             label: Text('1${l.min}'),
-                            icon: Icon(Icons.timer_outlined),
+                            icon: Icon(Icons.timer_rounded),
                           ),
                         ],
                         selected: {_interval},
@@ -281,16 +298,18 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Slider(
-                      value: _threshold.toDouble(),
-                      min: 0,
-                      max: 4,
-                      divisions: 4,
-                      label: '$_threshold',
-                      onChanged: disabled
-                          ? null
-                          : (v) =>
-                              setState(() => _threshold = v.round()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Slider(
+                        value: _threshold.toDouble(),
+                        min: 0,
+                        max: 4,
+                        divisions: 4,
+                        label: '$_threshold',
+                        onChanged: disabled
+                            ? null
+                            : (v) => setState(() => _threshold = v.round()),
+                      ),
                     ),
 
                     const SizedBox(height: 12),
@@ -303,16 +322,18 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Slider(
-                      value: _beltWarning.toDouble(),
-                      min: 3,
-                      max: 30,
-                      divisions: 27,
-                      label: '$_beltWarning ${l.min}',
-                      onChanged: disabled
-                          ? null
-                          : (v) =>
-                              setState(() => _beltWarning = v.round()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Slider(
+                        value: _beltWarning.toDouble(),
+                        min: 3,
+                        max: 30,
+                        divisions: 27,
+                        label: '$_beltWarning ${l.min}',
+                        onChanged: disabled
+                            ? null
+                            : (v) => setState(() => _beltWarning = v.round()),
+                      ),
                     ),
 
                     const SizedBox(height: 12),
@@ -324,8 +345,7 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                       spacing: 8,
                       children: [
                         FilledButton.icon(
-                          icon:
-                              const Icon(Icons.upload_outlined, size: 16),
+                          icon: const Icon(Icons.upload_rounded, size: 16),
                           label: Text(l.write),
                           style: FilledButton.styleFrom(
                             backgroundColor: cs.primary,
@@ -333,17 +353,17 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 10),
+                              horizontal: 14,
+                              vertical: 10,
+                            ),
                           ),
-                          onPressed:
-                              disabled || _loading ? null : _write,
+                          onPressed: disabled || _loading ? null : _write,
                         ),
                         if (_loading)
                           const SizedBox(
                             width: 16,
                             height: 16,
-                            child:
-                                CircularProgressIndicator(strokeWidth: 2),
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                       ],
                     ),
@@ -374,7 +394,9 @@ class _SystemSettingsSectionState extends ConsumerState<SystemSettingsSection> {
     final siMode = _siMode ? 1 : 0;
     final storageMode = _storageMode ? 1 : 0;
 
-    final success = await ref.read(deviceRepositoryProvider).setSystemParams(
+    final success = await ref
+        .read(deviceRepositoryProvider)
+        .setSystemParams(
           extData96ms: extData96ms,
           siMode: siMode,
           advertiseSetting: _advertise,

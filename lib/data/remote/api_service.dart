@@ -6,7 +6,8 @@ class ApiService {
   final _log = Logger(printer: SimplePrinter(printTime: false));
 
   ApiService({required String baseUrl, required String apiKey})
-      : _dio = Dio(BaseOptions(
+    : _dio = Dio(
+        BaseOptions(
           baseUrl: baseUrl,
           connectTimeout: const Duration(seconds: 15),
           receiveTimeout: const Duration(seconds: 15),
@@ -14,7 +15,8 @@ class ApiService {
             'Content-Type': 'application/json',
             if (apiKey.isNotEmpty) 'Authorization': 'Bearer $apiKey',
           },
-        ));
+        ),
+      );
 
   void updateConfig({String? baseUrl, String? apiKey}) {
     if (baseUrl != null) _dio.options.baseUrl = baseUrl;
@@ -44,6 +46,7 @@ class ApiService {
 
   Future<Response> postFallEvent(Map<String, dynamic> body) async {
     try {
+      print("POST fall event: $body");
       return await _dio.post('rawdata/sensor_data_raw', data: body);
     } catch (e) {
       _log.w('POST fall event failed: $e');
