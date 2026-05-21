@@ -113,7 +113,6 @@ extension AppDelegate: CLLocationManagerDelegate {
         didFailWithError error: Error
     ) {}
 }
-
 // MARK: - CBCentralManagerDelegate
 
 extension AppDelegate: CBCentralManagerDelegate {
@@ -133,3 +132,4 @@ extension AppDelegate: CBCentralManagerDelegate {
         }
     }
 }
+
