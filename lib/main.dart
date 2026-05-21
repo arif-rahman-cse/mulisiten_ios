@@ -52,7 +52,7 @@ void main() async {
   // Disable FlutterBluePlus logging in debug mode
   if (kDebugMode) {
     FlutterBluePlus.setLogLevel(LogLevel.verbose, color: false);
-    debugPrint = (String? message, {int? wrapWidth}) {};
+    // debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
   FlutterBluePlus.adapterState.listen(

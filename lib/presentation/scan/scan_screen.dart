@@ -151,10 +151,21 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                 final result = _results[index];
                 final device = result.device;
                 return ListTile(
-                  leading: Image.asset(
-                    'assets/icons/toshiba_band.png',
-                    width: 40,
-                    height: 40,
+                  // add cirlce avatar with image assets/icons/toshiba_band.png, and make it a bit smaller
+                  
+
+                  // leading: Image.asset(
+                  //   'assets/icons/toshiba_band.png',
+                  //   width: 40,
+                  //   height: 40,
+                  // ),
+                  leading: CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    child: Image.asset(
+                      'assets/icons/toshiba_band.png',
+                      width: 24,
+                      height: 24,
+                    ),  
                   ),
                   title: Text(device.platformName),
                   trailing: Text('${result.rssi} dBm'),
