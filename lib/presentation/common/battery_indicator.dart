@@ -72,7 +72,9 @@ class _BatteryPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final bodyWidth = size.width - 4; // leave room for the tip
+    const tipWidth = 2.5;
+    const tipGap = 2.0;
+    final bodyWidth = size.width - tipWidth - tipGap;
     final bodyHeight = size.height;
     final radius = bodyHeight * 0.22;
     final strokeWidth = 1.0;
@@ -108,13 +110,14 @@ class _BatteryPainter extends CustomPainter {
     }
 
     // ── Battery tip (positive terminal) ──
-    final tipWidth = 3.0;
     final tipHeight = bodyHeight * 0.4;
     final tipTop = (bodyHeight - tipHeight) / 2;
+    final tipFrontRadius = Radius.circular(tipHeight * 0.32);
 
-    final tipRect = RRect.fromRectAndRadius(
-      Rect.fromLTWH(bodyWidth, tipTop, tipWidth, tipHeight),
-      Radius.circular(tipWidth * 0.4),
+    final tipRect = RRect.fromRectAndCorners(
+      Rect.fromLTWH(bodyWidth + tipGap, tipTop, tipWidth, tipHeight),
+      topRight: tipFrontRadius,
+      bottomRight: tipFrontRadius,
     );
 
     final tipPaint = Paint()
