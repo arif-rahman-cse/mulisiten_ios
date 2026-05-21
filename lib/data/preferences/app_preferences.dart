@@ -12,6 +12,7 @@ class AppPreferences {
   static const _keyRealtimeUploadEnabled = 'realtime_upload_enabled';
   static const _keyRealtimeUploadInterval = 'realtime_upload_interval_sec';
   static const _keyCloudApiUrl = 'cloud_api_url';
+  static const _keyCloudApiKey = 'cloud_api_key';
   static const _keyPairedDeviceAddress = 'paired_device_address';
   static const _keyPairedDeviceName = 'paired_device_name';
   static const _keySensingActive = 'sensing_active';
@@ -63,8 +64,11 @@ class AppPreferences {
 
   // --- Cloud API ---
   String get cloudApiUrl =>
-      _prefs.getString(_keyCloudApiUrl) ?? 'https://cms.k-fis.com/';
+      _prefs.getString(_keyCloudApiUrl) ?? 'https://k-fis.com/app/api/';
   set cloudApiUrl(String v) => _prefs.setString(_keyCloudApiUrl, v);
+
+  String get cloudApiKey => _prefs.getString(_keyCloudApiKey) ?? '';
+  set cloudApiKey(String v) => _prefs.setString(_keyCloudApiKey, v);
 
   // --- Paired Device ---
   String get pairedDeviceAddress =>

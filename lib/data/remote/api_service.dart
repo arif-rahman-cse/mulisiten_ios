@@ -13,7 +13,7 @@ class ApiService {
           receiveTimeout: const Duration(seconds: 15),
           headers: {
             'Content-Type': 'application/json',
-            if (apiKey.isNotEmpty) 'Authorization': 'Bearer $apiKey',
+            if (apiKey.isNotEmpty) 'X-Api-Key': apiKey,
           },
         ),
       );
@@ -21,23 +21,28 @@ class ApiService {
   void updateConfig({String? baseUrl, String? apiKey}) {
     if (baseUrl != null) _dio.options.baseUrl = baseUrl;
     if (apiKey != null) {
-      _dio.options.headers['Authorization'] = 'Bearer $apiKey';
+      if (apiKey.isEmpty) {
+        _dio.options.headers.remove('X-Api-Key');
+      } else {
+        _dio.options.headers['X-Api-Key'] = apiKey;
+      }
     }
   }
 
   Future<Response> postSensorData(Map<String, dynamic> body) async {
-    try {
-      _log.d('POST sensor_data_raw: $body');
-      return await _dio.post('rawdata/sensor_data_raw', data: body);
+    try {      
+      final res = await _dio.post('sensor-data-raw', data: body);
+      return res;
     } catch (e) {
-      _log.w('POST sensor_data_raw failed: $e');
+      _log.w('POST sensor-data-raw failed: $e');
       rethrow;
     }
   }
 
   Future<Response> postSensingBatch(Map<String, dynamic> body) async {
     try {
-      return await _dio.post('api/v1/sensing-batch', data: body);
+      final res = await _dio.post('api/v1/sensing-batch', data: body);
+      return res;
     } catch (e) {
       _log.w('POST sensing-batch failed: $e');
       rethrow;
@@ -46,10 +51,10 @@ class ApiService {
 
   Future<Response> postFallEvent(Map<String, dynamic> body) async {
     try {
-      print("POST fall event: $body");
-      return await _dio.post('rawdata/sensor_data_raw', data: body);
+      final res = await _dio.post('sensor-data-raw', data: body);
+      return res;
     } catch (e) {
-      _log.w('POST fall event failed: $e');
+      _log.w('POST fall-event failed: $e');
       rethrow;
     }
   }

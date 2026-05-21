@@ -56,6 +56,7 @@
   "uploadInterval": "Upload Interval",
   "apiBaseUrl": "API Base URL",
   "apiKey": "API Key",
+  "apiKeyActive": "Active",
   "localDatabase": "Local Database",
   "saveToLocalDb": "Save to Local DB",
   "saveDesc": "Store sensing data locally",

@@ -16,6 +16,15 @@ import CoreBluetooth
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
+        // flutter_background_service_ios stores callback handles in UserDefaults and
+        // auto-spawns a second FlutterEngine on background-fetch callbacks, which
+        // crashes with KERN_NOT_PERMITTED in debug mode. Clear those keys so the
+        // plugin never tries to launch a background engine on iOS.
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "foreground_callback_handle")
+        defaults.removeObject(forKey: "background_callback_handle")
+        defaults.removeObject(forKey: "auto_start")
+
         if launchOptions?[.location] != nil {
             pendingBackgroundEvents.append(["trigger": "significantLocationChange"])
         }

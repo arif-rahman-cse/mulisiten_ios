@@ -63,9 +63,14 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
 
-  await initializeBackgroundService();
-  final service = FlutterBackgroundService();
-  await service.startService();
+  // flutter_background_service on iOS spawns a second FlutterEngine that
+  // requires JIT execution rights — denied on-device with KERN_NOT_PERMITTED.
+  // iOS reconnect / background sync is handled by BackgroundLaunchHandler instead.
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    await initializeBackgroundService();
+    final service = FlutterBackgroundService();
+    await service.startService();
+  }
 
   // Listen for native iOS background launch events (significant location
   // change, Core Bluetooth restoration) and trigger reconnection + sync.
@@ -73,7 +78,9 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
       child: const Ms200App(),
     ),
   );

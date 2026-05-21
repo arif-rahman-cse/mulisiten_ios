@@ -177,6 +177,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apiKey => 'API Key';
 
   @override
+  String get apiKeyActive => 'Active';
+
+  @override
   String get localDatabase => 'Local Database';
 
   @override

@@ -13,38 +13,35 @@ class CloudUploader {
     SensingData data,
     String userName,
   ) async {
-    print('uploadSingleSensingData: $data');
-    final body = _buildSensorBody(data, userName);
+    final body = _buildSensorValue(data, userName);
     return _retryPost(() => _api.postSensorData(body));
   }
 
   Future<bool> uploadFallEvent(FallEvent event) async {
-    print('uploadFallEvent: $event');
     final body = {
-      'sensor_value': {
-        'device_serial': event.deviceId,
-        'timestamp': event.timestamp,
-        'heart_rate': event.heartRate,
-        'situation_index': event.statusIndex,
-        'situation_index_level': event.statusLevel,
-        'heat_index': event.heatIndex,
-        'temperature': event.temperature / 100.0,
-        'humidity': event.humidity / 100.0,
-        'heat_index_max': event.heatIndexMax,
-        'battery_level': event.batteryLevel,
-        'latitude': event.latitude / 1e7,
-        'longitude': event.longitude / 1e7,
-        'altitude_difference': event.altitudeDiff / 10.0,
-        'ppi_0': event.ppi0,
-        'ppi_1': event.ppi1,
-        'ppi_2': event.ppi2,
-        'fall_detection_status': event.fallState,
-        'user_name': event.userName,
-        'blood_index': 0,
-        'bma': 0,
-        'elapsed_seconds': event.elapsedSeconds,
-        'source': event.source,
-      },
+      'device_model': 'MS200',
+      'device_serial_no': event.deviceId,
+      'timestamp': event.timestamp,
+      'heart_rate': event.heartRate,
+      'situation_index': event.statusIndex,
+      'situation_index_level': event.statusLevel,
+      'heat_index': event.heatIndex,
+      'temperature': event.temperature / 100.0,
+      'humidity': event.humidity / 100.0,
+      'heat_index_max': event.heatIndexMax,
+      'battery_level': event.batteryLevel,
+      'latitude': event.latitude / 1e7,
+      'longitude': event.longitude / 1e7,
+      'altitude_difference': event.altitudeDiff / 10.0,
+      'ppi_0': event.ppi0,
+      'ppi_1': event.ppi1,
+      'ppi_2': event.ppi2,
+      'fall_detection_status': event.fallState,
+      'user_name': event.userName,
+      'blood_index': 0,
+      'bma': 0,
+      'elapsed_seconds': event.elapsedSeconds,
+      'source': event.source,
     };
     return _retryPost(() => _api.postFallEvent(body));
   }
@@ -54,14 +51,15 @@ class CloudUploader {
     final body = {'records': items};
     return _retryPost(() => _api.postSensingBatch(body));
   }
-
-  Map<String, dynamic> _buildSensorBody(SensingData data, String userName) {
-    return {'sensor_value': _buildSensorValue(data, userName)};
-  }
+  //API updated! No wrapper needed now!
+  // Map<String, dynamic> _buildSensorBody(SensingData data, String userName) {
+  //   return {'sensor_value': _buildSensorValue(data, userName)};
+  // }
 
   Map<String, dynamic> _buildSensorValue(SensingData data, String userName) {
     return {
-      'device_serial': data.deviceId,
+      'device_model': 'MS200',
+      'device_serial_no': data.deviceId,
       'timestamp': data.timestamp,
       'heart_rate': data.heartRate,
       'situation_index': data.statusIndex,

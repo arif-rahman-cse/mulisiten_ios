@@ -13,24 +13,38 @@ class CloudSettingsSection extends ConsumerStatefulWidget {
 }
 
 class _CloudSettingsSectionState extends ConsumerState<CloudSettingsSection> {
-  //late TextEditingController _urlCtrl;
-  //late TextEditingController _keyCtrl;
+  late TextEditingController _keyCtrl;
+  bool _obscure = true;
 
   static const _intervals = [5, 10, 15, 30, 60, 120, 300];
 
   @override
   void initState() {
     super.initState();
-    //final prefs = ref.read(appPreferencesProvider);
-    //_urlCtrl = TextEditingController(text: prefs.cloudApiUrl);
-    //_keyCtrl = TextEditingController(text: prefs.cloudApiKey);
+    final prefs = ref.read(appPreferencesProvider);
+    _keyCtrl = TextEditingController(text: prefs.cloudApiKey);
+    _keyCtrl.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    //_urlCtrl.dispose();
-    //_keyCtrl.dispose();
+    _keyCtrl.dispose();
     super.dispose();
+  }
+
+  void _setKey(AppPreferences prefs) {
+    final key = _keyCtrl.text.trim();
+    prefs.cloudApiKey = key;
+    ref.read(apiServiceProvider).updateConfig(apiKey: key);
+    setState(() {});
+  }
+
+  void _clearKey(AppPreferences prefs) {
+    prefs.cloudApiKey = '';
+    prefs.realtimeUploadEnabled = false;
+    ref.read(apiServiceProvider).updateConfig(apiKey: '');
+    _keyCtrl.clear();
+    // listener calls setState
   }
 
   void _onUploadToggled(
@@ -43,20 +57,16 @@ class _CloudSettingsSectionState extends ConsumerState<CloudSettingsSection> {
       return;
     }
 
-    // If user already consented, just enable.
     if (prefs.cloudUploadConsented) {
       setState(() => prefs.realtimeUploadEnabled = true);
       return;
     }
 
-    // Show consent dialog for the first time.
     showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l.cloudConsentTitle),
-        content: SingleChildScrollView(
-          child: Text(l.cloudConsentMessage),
-        ),
+        content: SingleChildScrollView(child: Text(l.cloudConsentMessage)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -82,6 +92,9 @@ class _CloudSettingsSectionState extends ConsumerState<CloudSettingsSection> {
   Widget build(BuildContext context) {
     final prefs = ref.watch(appPreferencesProvider);
     final l = AppLocalizations.of(context)!;
+    final hasKey = prefs.cloudApiKey.isNotEmpty;
+    final fieldText = _keyCtrl.text.trim();
+    final isDirty = fieldText != prefs.cloudApiKey;
 
     return Card(
       child: Padding(
@@ -89,74 +102,96 @@ class _CloudSettingsSectionState extends ConsumerState<CloudSettingsSection> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //Text(l.cloudUpload, style: Theme.of(context).textTheme.titleSmall),
-            // const SizedBox(height: 12),
-            // SwitchListTile(
-            //   title: Text(l.bufferToCloud),
-            //   subtitle: Text(l.bufferDesc),
-            //   value: prefs.cloudBufferEnabled,
-            //   onChanged: (v) => setState(() => prefs.cloudBufferEnabled = v),
-            //   contentPadding: EdgeInsets.zero,
-            //   secondary: Icon(Icons.cloud),
-            // ),
-            // const Divider(height: 0),
-            SwitchListTile(
-              title: Text(l.realtimeUpload),
-              subtitle: Text(l.realtimeDesc),
-              value: prefs.realtimeUploadEnabled,
-              onChanged: (v) => _onUploadToggled(v, prefs, l),
-              contentPadding: EdgeInsets.zero,
-              secondary: Icon(Icons.cloud_upload),
+            TextField(
+              controller: _keyCtrl,
+              decoration: InputDecoration(
+                labelText: l.apiKey,
+                isDense: true,
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscure ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () => setState(() => _obscure = !_obscure),
+                ),
+              ),
+              obscureText: _obscure,
             ),
             const SizedBox(height: 8),
-            if (prefs.realtimeUploadEnabled) ...[
-              const SizedBox(height: 4),
-              DropdownButtonFormField<int>(
-                initialValue:
-                    _intervals.contains(prefs.realtimeUploadIntervalSec)
-                    ? prefs.realtimeUploadIntervalSec
-                    : 30,
-                decoration: InputDecoration(
-                  labelText: l.uploadInterval,
-                  isDense: true,
-                  border: const OutlineInputBorder(),
+            Row(
+              children: [
+                if (hasKey)
+                  Chip(
+                    avatar: const Icon(Icons.check_circle, size: 16),
+                    label: Text(l.apiKeyActive),
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                const Spacer(),
+                OutlinedButton.icon(
+                  onPressed: fieldText.isNotEmpty || hasKey
+                      ? () => _clearKey(prefs)
+                      : null,
+                  icon: const Icon(Icons.clear, size: 16),
+                  label: Text(l.clear),
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                  ),
                 ),
-                items: _intervals
-                    .map(
-                      (s) => DropdownMenuItem(
-                        value: s,
-                        child: Text(s >= 60 ? '${s ~/ 60} ${l.min}' : '${s}s'),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (v) {
-                  if (v != null) {
-                    setState(() => prefs.realtimeUploadIntervalSec = v);
-                  }
-                },
+                if (isDirty && fieldText.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  FilledButton.icon(
+                    onPressed: () => _setKey(prefs),
+                    icon: const Icon(Icons.check, size: 16),
+                    label: Text(l.saveBtn),
+                    style: FilledButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            if (hasKey) ...[
+              const Divider(height: 24),
+              SwitchListTile(
+                title: Text(l.realtimeUpload),
+                subtitle: Text(l.realtimeDesc),
+                value: prefs.realtimeUploadEnabled,
+                onChanged: (v) => _onUploadToggled(v, prefs, l),
+                contentPadding: EdgeInsets.zero,
+                secondary: const Icon(Icons.cloud_upload),
               ),
-              //const SizedBox(height: 12),
+              if (prefs.realtimeUploadEnabled) ...[
+                const SizedBox(height: 8),
+                DropdownButtonFormField<int>(
+                  initialValue:
+                      _intervals.contains(prefs.realtimeUploadIntervalSec)
+                      ? prefs.realtimeUploadIntervalSec
+                      : 30,
+                  decoration: InputDecoration(
+                    labelText: l.uploadInterval,
+                    isDense: true,
+                    border: const OutlineInputBorder(),
+                  ),
+                  items: _intervals
+                      .map(
+                        (s) => DropdownMenuItem(
+                          value: s,
+                          child: Text(
+                            s >= 60 ? '${s ~/ 60} ${l.min}' : '${s}s',
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (v) {
+                    if (v != null) {
+                      setState(() => prefs.realtimeUploadIntervalSec = v);
+                    }
+                  },
+                ),
+              ],
             ],
-            // TextField(
-            //   controller: _urlCtrl,
-            //   decoration: InputDecoration(
-            //     labelText: l.apiBaseUrl,
-            //     isDense: true,
-            //     border: const OutlineInputBorder(),
-            //   ),
-            //   onChanged: (v) => prefs.cloudApiUrl = v,
-            // ),
-            // const SizedBox(height: 8),
-            // TextField(
-            //   controller: _keyCtrl,
-            //   decoration: InputDecoration(
-            //     labelText: l.apiKey,
-            //     isDense: true,
-            //     border: const OutlineInputBorder(),
-            //   ),
-            //   obscureText: true,
-            //   onChanged: (v) => prefs.cloudApiKey = v,
-            // ),
           ],
         ),
       ),

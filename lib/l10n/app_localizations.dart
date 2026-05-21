@@ -434,6 +434,12 @@ abstract class AppLocalizations {
   /// **'API Key'**
   String get apiKey;
 
+  /// No description provided for @apiKeyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get apiKeyActive;
+
   /// No description provided for @localDatabase.
   ///
   /// In en, this message translates to:

@@ -10,7 +10,6 @@ import 'package:ms200_companion/data/preferences/app_preferences.dart';
 import 'package:ms200_companion/data/remote/api_service.dart';
 import 'package:ms200_companion/data/remote/cloud_uploader.dart';
 import 'package:ms200_companion/domain/model/sensing_data.dart';
-import 'package:ms200_companion/env/env.dart';
 
 final _log = Logger(printer: SimplePrinter(printTime: false));
 
@@ -123,7 +122,7 @@ Future<void> performBatchSync(String src) async {
     if (apiUrl.isEmpty) return;
 
     db = AppDatabase();
-    final api = ApiService(baseUrl: apiUrl, apiKey: Env.cloudApiKey);
+    final api = ApiService(baseUrl: apiUrl, apiKey: appPrefs.cloudApiKey);
     final uploader = CloudUploader(api);
 
     final records = await db.getUnsyncedRecords(100);

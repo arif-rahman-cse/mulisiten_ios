@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ms200_companion/env/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ms200_companion/data/ble/beacon_scanner.dart';
 import 'package:ms200_companion/data/ble/ble_manager.dart';
@@ -89,7 +88,7 @@ final locationProvider = Provider<DeviceLocationProvider>((ref) {
 
 final apiServiceProvider = Provider<ApiService>((ref) {
   final prefs = ref.watch(appPreferencesProvider);
-  return ApiService(baseUrl: prefs.cloudApiUrl, apiKey: Env.cloudApiKey);
+  return ApiService(baseUrl: prefs.cloudApiUrl, apiKey: prefs.cloudApiKey);
 });
 
 final cloudUploaderProvider = Provider<CloudUploader>((ref) {
